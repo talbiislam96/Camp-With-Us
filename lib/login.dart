@@ -319,7 +319,7 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  String name, email, mobile, password;
+  String name, surname, email, mobile, password;
   final _key = new GlobalKey<FormState>();
 
   bool _secureText = true;
@@ -340,30 +340,30 @@ class _RegisterState extends State<Register> {
 
   save() async {
     final response = await http
-        .post("http://website/flutter_app/api_verification.php", body: {
-      "flag": 2.toString(),
-      "name": name,
+        .post("http://localhost:1337/register", body: {
+      "prenom": name,
+      "name": surname,
       "email": email,
-      "mobile": mobile,
+      "tel_user": mobile,
       "password": password,
-      "fcm_token": "test_fcm_token"
     });
 
     final data = jsonDecode(response.body);
-    int value = data['value'];
-    String message = data['message'];
-    if (value == 1) {
+    print(data);
+   // int value = data['value'];
+    //String message = data['message'];
+    if (data == "You are successfully registered !") {
       setState(() {
         Navigator.pop(context);
       });
-      print(message);
-      registerToast(message);
-    } else if (value == 2) {
-      print(message);
-      registerToast(message);
+      print(data);
+      registerToast(data);
+    } else if (data == "Mail address already in use !'") {
+      print(data);
+      registerToast(data);
     } else {
-      print(message);
-      registerToast(message);
+      print(data);
+      registerToast(data);
     }
   }
 
@@ -429,7 +429,7 @@ class _RegisterState extends State<Register> {
                         child: TextFormField(
                           validator: (e) {
                             if (e.isEmpty) {
-                              return "Please insert Full Name";
+                              return "Please insert your Name";
                             }
                           },
                           onSaved: (e) => name = e,
@@ -444,7 +444,30 @@ class _RegisterState extends State<Register> {
                                 child: Icon(Icons.person, color: Colors.black),
                               ),
                               contentPadding: EdgeInsets.all(18),
-                              labelText: "Fullname"),
+                              labelText: "Name"),
+                        ),
+                      ),
+                      Card(
+                        elevation: 6.0,
+                        child: TextFormField(
+                          validator: (e) {
+                            if (e.isEmpty) {
+                              return "Please insert your Surname";
+                            }
+                          },
+                          onSaved: (e) => surname = e,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w300,
+                          ),
+                          decoration: InputDecoration(
+                              prefixIcon: Padding(
+                                padding: EdgeInsets.only(left: 20, right: 15),
+                                child: Icon(Icons.person, color: Colors.black),
+                              ),
+                              contentPadding: EdgeInsets.all(18),
+                              labelText: "Surname"),
                         ),
                       ),
 
