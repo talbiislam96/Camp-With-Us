@@ -43,8 +43,13 @@ class _LoginState extends State<Login> {
 
     final data = jsonDecode(response.body);
 
-    if ((data != "Check your password please !") &&
-        (data != "This email address is not registered !")) {
+    if (data == "Check your password please !") {
+      loginToast("Check your password please !");
+      print("Check your password and email please !");
+    } else if (data == "This email address is not registered !") {
+      loginToast("Check your email address please !");
+      print("Check your email please !");
+    } else {
       String emailAPI = data['email'];
       String nameAPI = data['prenom'];
       String surnameAPI = data['name'];
@@ -60,9 +65,6 @@ class _LoginState extends State<Login> {
         context,
         MaterialPageRoute(builder: (context) => MainMenu(signOut)),
       );
-    } else {
-      loginToast("Check your password and email please !");
-      print("Check your password and email please !");
     }
   }
 
@@ -105,7 +107,7 @@ class _LoginState extends State<Login> {
       preferences.setString("name", null);
       preferences.setString("email", null);
       preferences.setString("id", null);
-
+      print("empty sharedPref");
       preferences.commit();
       _loginStatus = LoginStatus.notSignIn;
     });
@@ -353,7 +355,7 @@ class _RegisterState extends State<Register> {
       registerToast(data);
     } else if (data == "Mail address already in use !'") {
       print(data);
-      registerToast(data);
+      registerToast("Your email address is already registered !");
     } else {
       print(data);
       registerToast(data);
@@ -613,6 +615,11 @@ class _MainMenuState extends State<MainMenu> {
   signOut() {
     setState(() {
       widget.signOut();
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Login()),
+      );
+      print("signed out");
     });
   }
 
