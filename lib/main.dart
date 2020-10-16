@@ -6,5 +6,6 @@ import 'package:camp_with_us/events.dart';
 import 'package:camp_with_us/article.dart';
 
 void main() => runApp(new MaterialApp(
+  debugShowCheckedModeBanner: false,
   home: Login(),
 ));
