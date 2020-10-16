@@ -15,16 +15,12 @@ class _EventState extends State<Events> {
 
 
     return Scaffold(
-        backgroundColor: Hexcolor("#EDEBE6"),
-    appBar: AppBar(
-    backgroundColor: Hexcolor("#819EA6"),
-    actions: <Widget>[
-    ],
-    ),
+        backgroundColor: HexColor("#EDEBE6"),
+
     body: Center(
     child: Text(
-    "WelCome",
-    style: TextStyle(fontSize: 30.0, color: Hexcolor("#819EA6")),
+    "events",
+    style: TextStyle(fontSize: 30.0, color: HexColor("#819EA6")),
     ),
     ),
 

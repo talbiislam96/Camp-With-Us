@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -21,14 +22,20 @@ class MapScreenState extends State<ProfilePage>
   Widget build(BuildContext context) {
     return new Scaffold(
         body: new Container(
-          color: Colors.white,
+          color: HexColor("#819EA6"),
           child: new ListView(
             children: <Widget>[
               Column(
                 children: <Widget>[
                   new Container(
                     height: 250.0,
-                    color: Colors.white,
+                    decoration: BoxDecoration(
+                      color: HexColor("#EDEBE6"),
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(20),
+                          topLeft: Radius.circular(20)),
+                    ),
+
                     child: new Column(
                       children: <Widget>[
                         Padding(
@@ -36,20 +43,7 @@ class MapScreenState extends State<ProfilePage>
                             child: new Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                new Icon(
-                                  Icons.arrow_back_ios,
-                                  color: Colors.black,
-                                  size: 22.0,
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 25.0),
-                                  child: new Text('PROFILE',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20.0,
-                                          fontFamily: 'sans-serif-light',
-                                          color: Colors.black)),
-                                )
+
                               ],
                             )),
                         Padding(
@@ -66,7 +60,7 @@ class MapScreenState extends State<ProfilePage>
                                       shape: BoxShape.circle,
                                       image: new DecorationImage(
                                         image: new ExactAssetImage(
-                                            'assets/images/as.png'),
+                                            'assets/user_profile.png'),
                                         fit: BoxFit.cover,
                                       ),
                                     )),
@@ -78,11 +72,11 @@ class MapScreenState extends State<ProfilePage>
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
                                     new CircleAvatar(
-                                      backgroundColor: Colors.red,
+                                      backgroundColor: HexColor("#819EA6"),
                                       radius: 25.0,
                                       child: new Icon(
                                         Icons.camera_alt,
-                                        color: Colors.white,
+                                        color: Colors.black,
                                       ),
                                     )
                                   ],
@@ -93,7 +87,8 @@ class MapScreenState extends State<ProfilePage>
                     ),
                   ),
                   new Container(
-                    color: Color(0xffFFFFFF),
+                    color: HexColor("#EDEBE6"),
+
                     child: Padding(
                       padding: EdgeInsets.only(bottom: 25.0),
                       child: new Column(
@@ -112,7 +107,7 @@ class MapScreenState extends State<ProfilePage>
                                     mainAxisSize: MainAxisSize.min,
                                     children: <Widget>[
                                       new Text(
-                                        'Parsonal Information',
+                                        'Personal Information',
                                         style: TextStyle(
                                             fontSize: 18.0,
                                             fontWeight: FontWeight.bold),
@@ -177,7 +172,7 @@ class MapScreenState extends State<ProfilePage>
                                     mainAxisSize: MainAxisSize.min,
                                     children: <Widget>[
                                       new Text(
-                                        'Email ID',
+                                        'Email adress',
                                         style: TextStyle(
                                             fontSize: 16.0,
                                             fontWeight: FontWeight.bold),
@@ -195,7 +190,7 @@ class MapScreenState extends State<ProfilePage>
                                   new Flexible(
                                     child: new TextField(
                                       decoration: const InputDecoration(
-                                          hintText: "Enter Email ID"),
+                                          hintText: "Enter Email adress"),
                                       enabled: !_status,
                                     ),
                                   ),
@@ -236,65 +231,65 @@ class MapScreenState extends State<ProfilePage>
                                   ),
                                 ],
                               )),
-                          Padding(
-                              padding: EdgeInsets.only(
-                                  left: 25.0, right: 25.0, top: 25.0),
-                              child: new Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  Expanded(
-                                    child: Container(
-                                      child: new Text(
-                                        'Pin Code',
-                                        style: TextStyle(
-                                            fontSize: 16.0,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                    flex: 2,
-                                  ),
-                                  Expanded(
-                                    child: Container(
-                                      child: new Text(
-                                        'State',
-                                        style: TextStyle(
-                                            fontSize: 16.0,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                    flex: 2,
-                                  ),
-                                ],
-                              )),
-                          Padding(
-                              padding: EdgeInsets.only(
-                                  left: 25.0, right: 25.0, top: 2.0),
-                              child: new Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  Flexible(
-                                    child: Padding(
-                                      padding: EdgeInsets.only(right: 10.0),
-                                      child: new TextField(
-                                        decoration: const InputDecoration(
-                                            hintText: "Enter Pin Code"),
-                                        enabled: !_status,
-                                      ),
-                                    ),
-                                    flex: 2,
-                                  ),
-                                  Flexible(
-                                    child: new TextField(
-                                      decoration: const InputDecoration(
-                                          hintText: "Enter State"),
-                                      enabled: !_status,
-                                    ),
-                                    flex: 2,
-                                  ),
-                                ],
-                              )),
+//                          Padding(
+//                              padding: EdgeInsets.only(
+//                                  left: 25.0, right: 25.0, top: 25.0),
+//                              child: new Row(
+//                                mainAxisSize: MainAxisSize.max,
+//                                mainAxisAlignment: MainAxisAlignment.start,
+//                                children: <Widget>[
+//                                  Expanded(
+//                                    child: Container(
+//                                      child: new Text(
+//                                        'Pin Code',
+//                                        style: TextStyle(
+//                                            fontSize: 16.0,
+//                                            fontWeight: FontWeight.bold),
+//                                      ),
+//                                    ),
+//                                    flex: 2,
+//                                  ),
+//                                  Expanded(
+//                                    child: Container(
+//                                      child: new Text(
+//                                        'State',
+//                                        style: TextStyle(
+//                                            fontSize: 16.0,
+//                                            fontWeight: FontWeight.bold),
+//                                      ),
+//                                    ),
+//                                    flex: 2,
+//                                  ),
+//                                ],
+//                              )),
+//                          Padding(
+//                              padding: EdgeInsets.only(
+//                                  left: 25.0, right: 25.0, top: 2.0),
+//                              child: new Row(
+//                                mainAxisSize: MainAxisSize.max,
+//                                mainAxisAlignment: MainAxisAlignment.start,
+//                                children: <Widget>[
+//                                  Flexible(
+//                                    child: Padding(
+//                                      padding: EdgeInsets.only(right: 10.0),
+//                                      child: new TextField(
+//                                        decoration: const InputDecoration(
+//                                            hintText: "Enter Pin Code"),
+//                                        enabled: !_status,
+//                                      ),
+//                                    ),
+//                                    flex: 2,
+//                                  ),
+//                                  Flexible(
+//                                    child: new TextField(
+//                                      decoration: const InputDecoration(
+//                                          hintText: "Enter State"),
+//                                      enabled: !_status,
+//                                    ),
+//                                    flex: 2,
+//                                  ),
+//                                ],
+//                              )),
                           !_status ? _getActionButtons() : new Container(),
                         ],
                       ),
@@ -369,11 +364,11 @@ class MapScreenState extends State<ProfilePage>
   Widget _getEditIcon() {
     return new GestureDetector(
       child: new CircleAvatar(
-        backgroundColor: Colors.red,
+        backgroundColor: HexColor("#819EA6"),
         radius: 14.0,
         child: new Icon(
           Icons.edit,
-          color: Colors.white,
+          color: Colors.black,
           size: 16.0,
         ),
       ),

@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
@@ -127,7 +125,7 @@ class _LoginState extends State<Login> {
     //switch (_loginStatus) {
     //  case LoginStatus.notSignIn:
     return Scaffold(
-      backgroundColor: Hexcolor("#819EA6"),
+      backgroundColor: HexColor("#819EA6"),
       body: Center(
         child: ListView(
           shrinkWrap: true,
@@ -137,7 +135,7 @@ class _LoginState extends State<Login> {
               child: Container(
                 padding: const EdgeInsets.all(8.0),
 //            color: Colors.grey.withAlpha(20),
-                color: Hexcolor("#819EA6"),
+                color: HexColor("#819EA6"),
                 child: Form(
                   key: _key,
                   child: Column(
@@ -165,7 +163,7 @@ class _LoginState extends State<Login> {
                         child: Text(
                           "Login",
                           style: TextStyle(
-                              color: Hexcolor("#EDEBE6"), fontSize: 30.0),
+                              color: HexColor("#EDEBE6"), fontSize: 30.0),
                         ),
                       ),
                       SizedBox(
@@ -239,7 +237,7 @@ class _LoginState extends State<Login> {
                         child: Text(
                           "Forgot Password?",
                           style: TextStyle(
-                              color: Hexcolor("#EDEBE6"),
+                              color: HexColor("#EDEBE6"),
                               fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -261,7 +259,7 @@ class _LoginState extends State<Login> {
                                   style: TextStyle(fontSize: 18.0),
                                 ),
                                 textColor: Colors.black,
-                                color: Hexcolor("#EDEBE6"),
+                                color: HexColor("#EDEBE6"),
                                 onPressed: () {
                                   check();
                                   /*Navigator.push(
@@ -282,7 +280,7 @@ class _LoginState extends State<Login> {
                                   style: TextStyle(fontSize: 18.0),
                                 ),
                                 textColor: Colors.black,
-                                color: Hexcolor("#EDEBE6"),
+                                color: HexColor("#EDEBE6"),
                                 onPressed: () {
                                   Navigator.push(
                                     context,
@@ -378,7 +376,7 @@ class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Hexcolor("#819EA6"),
+      backgroundColor: HexColor("#819EA6"),
       body: Center(
         child: ListView(
           shrinkWrap: true,
@@ -387,7 +385,7 @@ class _RegisterState extends State<Register> {
             Center(
               child: Container(
                 padding: const EdgeInsets.all(8.0),
-                color: Hexcolor("#819EA6"),
+                color: HexColor("#819EA6"),
                 child: Form(
                   key: _key,
                   child: Column(
@@ -415,7 +413,7 @@ class _RegisterState extends State<Register> {
                         child: Text(
                           "Register",
                           style: TextStyle(
-                              color: Hexcolor("#EDEBE6"), fontSize: 30.0),
+                              color: HexColor("#EDEBE6"), fontSize: 30.0),
                         ),
                       ),
                       SizedBox(
@@ -567,7 +565,7 @@ class _RegisterState extends State<Register> {
                                   style: TextStyle(fontSize: 18.0),
                                 ),
                                 textColor: Colors.black,
-                                color: Hexcolor("#EDEBE6"),
+                                color: HexColor("#EDEBE6"),
                                 onPressed: () {
                                   check();
                                 }),
@@ -582,7 +580,7 @@ class _RegisterState extends State<Register> {
                                   style: TextStyle(fontSize: 18.0),
                                 ),
                                 textColor: Colors.black,
-                                color: Hexcolor("#EDEBE6"),
+                                color: HexColor("#EDEBE6"),
                                 onPressed: () {
                                   Navigator.push(
                                     context,
@@ -678,9 +676,9 @@ class _MainMenuState extends State<MainMenu> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Hexcolor("#EDEBE6"),
+      backgroundColor: HexColor("#EDEBE6"),
       appBar: AppBar(
-        backgroundColor: Hexcolor("#819EA6"),
+        backgroundColor: HexColor("#819EA6"),
         actions: <Widget>[
           IconButton(
             onPressed: () {
@@ -695,12 +693,17 @@ class _MainMenuState extends State<MainMenu> {
         currentIndex: _selectedTabIndex,
         onTap: _changeIndex,
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), title: Text("Home")),
+          BottomNavigationBarItem(icon: Icon(Icons.account_circle), title: Text("My Account")),
           BottomNavigationBarItem(
-              icon: Icon(Icons.search), title: Text("Search")),
+              icon: Icon(Icons.star), title: Text("Events")),
           BottomNavigationBarItem(
-              icon: Icon(Icons.account_circle), title: Text("My Account")),
+              icon: Icon(Icons.shopping_cart), title: Text("Items")),
         ],
+        selectedItemColor: HexColor("#EDEBE6"),
+        unselectedItemColor: Colors.black,
+        backgroundColor: HexColor("#819EA6"),
+
+
       ),
 
 
