@@ -6,6 +6,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:camp_with_us/profile.dart';
+import 'package:camp_with_us/events.dart';
+import 'package:camp_with_us/article.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -36,7 +39,7 @@ class _LoginState extends State<Login> {
   }
 
   login() async {
-    final response = await http.post("http://localhost:1337/login", body: {
+    final response = await http.post("http://10.0.2.2:1337/login", body: {
       "email": email,
       "password": password,
     });
@@ -335,7 +338,7 @@ class _RegisterState extends State<Register> {
   }
 
   save() async {
-    final response = await http.post("http://localhost:1337/register", body: {
+    final response = await http.post("http://10.0.2.2:1337/register", body: {
       "prenom": name,
       "name": surname,
       "email": email,
@@ -612,6 +615,28 @@ class MainMenu extends StatefulWidget {
 }
 
 class _MainMenuState extends State<MainMenu> {
+
+
+
+  int _selectedTabIndex = 0;
+
+  List<Widget> _widgetOptions = <Widget>[
+
+    ProfilePage(),
+    Events(),
+    Article()
+
+  ];
+
+  _changeIndex(int index) {
+    setState(() {
+      _selectedTabIndex = index;
+    });
+  }
+
+
+
+
   signOut() {
     setState(() {
       widget.signOut();
@@ -623,12 +648,11 @@ class _MainMenuState extends State<MainMenu> {
     });
   }
 
-  int currentIndex = 0;
-  String selectedIndex = 'TAB: 0';
+
 
   String email = "", name = "", surname = "";
   int id = 0;
-  TabController tabController;
+
 
   getPref() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -666,77 +690,30 @@ class _MainMenuState extends State<MainMenu> {
           )
         ],
       ),
-      body: Center(
-        child: Text(
-          "WelCome",
-          style: TextStyle(fontSize: 30.0, color: Hexcolor("#819EA6")),
-        ),
-      ),
-      bottomNavigationBar: BottomNavyBar(
-        backgroundColor: Hexcolor("#819EA6"),
-        iconSize: 30.0,
-//        iconSize: MediaQuery.of(context).size.height * .60,
-        currentIndex: currentIndex,
-        onItemSelected: (index) {
-          setState(() {
-            currentIndex = index;
-          });
-          selectedIndex = 'TAB: $currentIndex';
-//            print(selectedIndex);
-          reds(selectedIndex);
-        },
-
+      body:_widgetOptions[_selectedTabIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedTabIndex,
+        onTap: _changeIndex,
         items: [
-          BottomNavyBarItem(
-              icon: Icon(Icons.home),
-              title: Text('Home'),
-              activeColor: Hexcolor("#EDEBE6")),
-          BottomNavyBarItem(
-              icon: Icon(Icons.view_list),
-              title: Text('List'),
-              activeColor: Hexcolor("#EDEBE6")),
-          BottomNavyBarItem(
-              icon: Icon(Icons.person),
-              title: Text('Profile'),
-              activeColor: Hexcolor("#EDEBE6")),
+          BottomNavigationBarItem(icon: Icon(Icons.home), title: Text("Home")),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.search), title: Text("Search")),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.account_circle), title: Text("My Account")),
         ],
       ),
+
+
+
     );
   }
 
   //  Action on Bottom Bar Press
-  void reds(selectedIndex) {
-//    print(selectedIndex);
 
-    switch (selectedIndex) {
-      case "TAB: 0":
-        {
-          callToast("Tab 0");
-        }
-        break;
 
-      case "TAB: 1":
-        {
-          callToast("Tab 1");
-        }
-        break;
 
-      case "TAB: 2":
-        {
-          callToast("Tab 2");
-        }
-        break;
-    }
-  }
 
-  callToast(String msg) {
-    Fluttertoast.showToast(
-        msg: "$msg",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIos: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0);
-  }
+
+
+
 }
