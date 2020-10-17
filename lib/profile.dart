@@ -16,27 +16,22 @@ class MapScreenState extends State<ProfilePage>
   bool _status = true;
   final FocusNode myFocusNode = FocusNode();
   String emailProfile, nameProfile, surnameProfile, mobileProfile;
-  int idConnectedUser ;
-
+  int idConnectedUser;
+  TextEditingController controllerEmail,
+      controllerName,
+      controllerSurname,
+      controllerMobile;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    setState(() {
-      getProfile();
-    });
-  }
-
-  getProfile() {
     getProfileInfo();
   }
 
   getProfileInfo() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    setState(() {
-      idConnectedUser = preferences.getInt("id");
-    });
+    idConnectedUser = preferences.getInt("id");
     print("connected user id:" + idConnectedUser.toString());
     final response =
         await http.get("http://localhost:1337/user/show/$idConnectedUser");
@@ -47,7 +42,35 @@ class MapScreenState extends State<ProfilePage>
     nameProfile = data['prenom'];
     surnameProfile = data['name'];
     mobileProfile = data['tel_user'];
-    // print(mobileProfile);
+    setState(() {
+      controllerName = TextEditingController(text: nameProfile);
+      controllerSurname = TextEditingController(text: surnameProfile);
+      controllerEmail = TextEditingController(text: emailProfile);
+      controllerMobile = TextEditingController(text: mobileProfile);
+    });
+  }
+
+  editProfile(String name, String surname, String email, String phone) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    idConnectedUser = preferences.getInt("id");
+    final response = await http
+        .put("http://localhost:1337/user/edit/$idConnectedUser", body: {
+      "prenom": name,
+      "name": surname,
+      "email": email,
+      "tel_user": phone,
+    });
+
+    final data = jsonDecode(response.body);
+
+    print(data);
+    setState(() {
+      if (data == "Successfully modified") {
+        modifyToast("Informations successfully edited !");
+      } else {
+        errorModifyToast("error editing profile informations!");
+      }
+    });
   }
 
   modifyToast(String toast) {
@@ -57,6 +80,16 @@ class MapScreenState extends State<ProfilePage>
         gravity: ToastGravity.BOTTOM,
         timeInSecForIos: 1,
         backgroundColor: Colors.green,
+        textColor: Colors.white);
+  }
+
+  errorModifyToast(String toast) {
+    return Fluttertoast.showToast(
+        msg: toast,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIos: 1,
+        backgroundColor: Colors.red,
         textColor: Colors.white);
   }
 
@@ -189,9 +222,7 @@ class MapScreenState extends State<ProfilePage>
                             children: <Widget>[
                               new Flexible(
                                 child: new TextField(
-                                  decoration: InputDecoration(
-                                    hintText: nameProfile,
-                                  ),
+                                  controller: controllerName,
                                   enabled: !_status,
                                   autofocus: !_status,
                                 ),
@@ -226,9 +257,7 @@ class MapScreenState extends State<ProfilePage>
                             children: <Widget>[
                               new Flexible(
                                 child: new TextField(
-                                  decoration: InputDecoration(
-                                    hintText: surnameProfile,
-                                  ),
+                                  controller: controllerSurname,
                                   enabled: !_status,
                                   autofocus: !_status,
                                 ),
@@ -263,8 +292,8 @@ class MapScreenState extends State<ProfilePage>
                             children: <Widget>[
                               new Flexible(
                                 child: new TextField(
-                                  decoration:
-                                      InputDecoration(hintText: emailProfile),
+                                  keyboardType: TextInputType.emailAddress,
+                                  controller: controllerEmail,
                                   enabled: !_status,
                                 ),
                               ),
@@ -298,8 +327,8 @@ class MapScreenState extends State<ProfilePage>
                             children: <Widget>[
                               new Flexible(
                                 child: new TextField(
-                                  decoration:
-                                      InputDecoration(hintText: mobileProfile),
+                                  keyboardType: TextInputType.number,
+                                  controller: controllerMobile,
                                   enabled: !_status,
                                 ),
                               ),
@@ -343,6 +372,8 @@ class MapScreenState extends State<ProfilePage>
                   setState(() {
                     _status = true;
                     FocusScope.of(context).requestFocus(new FocusNode());
+                    editProfile(controllerName.text, controllerSurname.text,
+                        controllerEmail.text, controllerMobile.text);
                   });
                 },
                 shape: new RoundedRectangleBorder(

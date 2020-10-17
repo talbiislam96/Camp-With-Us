@@ -37,7 +37,7 @@ class _LoginState extends State<Login> {
   }
 
   login() async {
-    final response = await http.post("http://10.0.2.2:1337/login", body: {
+    final response = await http.post("http://localhost:1337/login", body: {
       "email": email,
       "password": password,
     });
@@ -46,10 +46,8 @@ class _LoginState extends State<Login> {
 
     if (data == "Check your password please !") {
       loginToast("Check your password please !");
-      print("Check your password and email please !");
     } else if (data == "This email address is not registered !") {
       loginToast("Check your email address please !");
-      print("Check your email please !");
     } else {
       String emailAPI = data['email'];
       String nameAPI = data['prenom'];
@@ -192,6 +190,7 @@ class _LoginState extends State<Login> {
                               ),
                               //contentPadding: EdgeInsets.symmetric(horizontal: 25, vertical: 20),
                               labelText: "Email"),
+                          keyboardType: TextInputType.emailAddress,
                         ),
                       ),
 
@@ -262,12 +261,6 @@ class _LoginState extends State<Login> {
                                 color: HexColor("#EDEBE6"),
                                 onPressed: () {
                                   check();
-                                  /*Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            MainMenu(signOut)),
-                                  );*/
                                 }),
                           ),
                           SizedBox(
@@ -336,7 +329,7 @@ class _RegisterState extends State<Register> {
   }
 
   save() async {
-    final response = await http.post("http://10.0.2.2:1337/register", body: {
+    final response = await http.post("http://localhost:1337/register", body: {
       "prenom": name,
       "name": surname,
       "email": email,
@@ -484,12 +477,14 @@ class _RegisterState extends State<Register> {
                             fontWeight: FontWeight.w300,
                           ),
                           decoration: InputDecoration(
-                              prefixIcon: Padding(
-                                padding: EdgeInsets.only(left: 20, right: 15),
-                                child: Icon(Icons.email, color: Colors.black),
-                              ),
-                              contentPadding: EdgeInsets.all(18),
-                              labelText: "Email"),
+                            prefixIcon: Padding(
+                              padding: EdgeInsets.only(left: 20, right: 15),
+                              child: Icon(Icons.email, color: Colors.black),
+                            ),
+                            contentPadding: EdgeInsets.all(18),
+                            labelText: "Email",
+                          ),
+                          keyboardType: TextInputType.emailAddress,
                         ),
                       ),
 
@@ -613,27 +608,15 @@ class MainMenu extends StatefulWidget {
 }
 
 class _MainMenuState extends State<MainMenu> {
-
-
-
   int _selectedTabIndex = 0;
 
-  List<Widget> _widgetOptions = <Widget>[
-
-    ProfilePage(),
-    Events(),
-    Article()
-
-  ];
+  List<Widget> _widgetOptions = <Widget>[ProfilePage(), Events(), Article()];
 
   _changeIndex(int index) {
     setState(() {
       _selectedTabIndex = index;
     });
   }
-
-
-
 
   signOut() {
     setState(() {
@@ -646,11 +629,8 @@ class _MainMenuState extends State<MainMenu> {
     });
   }
 
-
-
   String email = "", name = "", surname = "";
   int id = 0;
-
 
   getPref() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -688,12 +668,13 @@ class _MainMenuState extends State<MainMenu> {
           )
         ],
       ),
-      body:_widgetOptions[_selectedTabIndex],
+      body: _widgetOptions[_selectedTabIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedTabIndex,
         onTap: _changeIndex,
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.account_circle), title: Text("My Account")),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.account_circle), title: Text("My Account")),
           BottomNavigationBarItem(
               icon: Icon(Icons.star), title: Text("Events")),
           BottomNavigationBarItem(
@@ -702,21 +683,10 @@ class _MainMenuState extends State<MainMenu> {
         selectedItemColor: HexColor("#EDEBE6"),
         unselectedItemColor: Colors.black,
         backgroundColor: HexColor("#819EA6"),
-
-
       ),
-
-
-
     );
   }
 
   //  Action on Bottom Bar Press
-
-
-
-
-
-
 
 }
