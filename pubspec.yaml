@@ -35,6 +35,8 @@ dependencies:
   bottom_navy_bar: ^3.0.0
   shared_preferences: ^0.5.2
   hexcolor: ^1.0.4
+  image_picker: ^0.6.7+12
+  dio: ^3.0.8
 
 dev_dependencies:
   flutter_test:

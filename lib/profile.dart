@@ -5,6 +5,9 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:convert';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+import 'package:dio/dio.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -21,12 +24,88 @@ class MapScreenState extends State<ProfilePage>
       controllerName,
       controllerSurname,
       controllerMobile;
+  File _image;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getProfileInfo();
+  }
+
+  _imgFromCamera() async {
+    File image = await ImagePicker.pickImage(
+        source: ImageSource.camera, imageQuality: 50);
+
+    setState(() {
+      _image = image;
+    });
+  }
+
+  _imgFromGallery() async {
+    File image = await ImagePicker.pickImage(
+        source: ImageSource.gallery, imageQuality: 50);
+
+    setState(() {
+      _image = image;
+    });
+  }
+
+  void _showPicker(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Container(
+              child: new Wrap(
+                children: <Widget>[
+                  new ListTile(
+                      leading: new Icon(Icons.photo_library),
+                      title: new Text('Photo Library'),
+                      onTap: () {
+                        _imgFromGallery();
+                        Navigator.of(context).pop();
+                      }),
+                  new ListTile(
+                    leading: new Icon(Icons.photo_camera),
+                    title: new Text('Camera'),
+                    onTap: () {
+                      _imgFromCamera();
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  void getHttp() async {
+    if (_image == null) return;
+    String base64Image = base64Encode(_image.readAsBytesSync());
+    String fileName = _image.path.split("/").last;
+    try {
+      Response response = await Dio().patch(
+          "http://localhost:1337/user/edit/image/$idConnectedUser",
+          data: {"image": base64Image, "name": fileName});
+      print(response);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void _upload() async {
+    if (_image == null) return;
+    //print(_image.readAsBytesSync());
+    String base64Image = base64Encode(_image.readAsBytesSync());
+    String fileName = _image.path.split("/").last;
+
+    final response = await http.put("http://localhost:1337/user/edit/image/$idConnectedUser", body: {
+      "image": base64Image,
+      "name": fileName,
+    });
+   print(response.statusCode);
   }
 
   getProfileInfo() async {
@@ -125,17 +204,32 @@ class MapScreenState extends State<ProfilePage>
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            new Container(
-                                width: 140.0,
-                                height: 140.0,
-                                decoration: new BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: new DecorationImage(
-                                    image: new ExactAssetImage(
-                                        'assets/user_profile.png'),
-                                    fit: BoxFit.cover,
-                                  ),
-                                )),
+                            CircleAvatar(
+                              radius: 55,
+                              // backgroundColor: Color(0xffFDCF09),
+                              child: _image != null
+                                  ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(50),
+                                      child: Image.file(
+                                        _image,
+                                        width: 100,
+                                        height: 100,
+                                        fit: BoxFit.fitHeight,
+                                      ),
+                                    )
+                                  : Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.grey[200],
+                                          borderRadius:
+                                              BorderRadius.circular(50)),
+                                      width: 100,
+                                      height: 100,
+                                      child: Icon(
+                                        Icons.account_circle,
+                                        color: Colors.grey[800],
+                                      ),
+                                    ),
+                            ),
                           ],
                         ),
                         Padding(
@@ -146,9 +240,16 @@ class MapScreenState extends State<ProfilePage>
                                 new CircleAvatar(
                                   backgroundColor: HexColor("#819EA6"),
                                   radius: 25.0,
-                                  child: new Icon(
-                                    Icons.camera_alt,
-                                    color: Colors.black,
+                                  child: GestureDetector(
+                                    child: new Icon(
+                                      Icons.camera_alt,
+                                      color: Colors.black,
+                                    ),
+                                    onTap: () {
+                                      _showPicker(context);
+                                        _upload();
+
+                                    },
                                   ),
                                 )
                               ],
