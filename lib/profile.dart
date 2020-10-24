@@ -18,7 +18,7 @@ class MapScreenState extends State<ProfilePage>
     with SingleTickerProviderStateMixin {
   bool _status = true;
   final FocusNode myFocusNode = FocusNode();
-  String emailProfile, nameProfile, surnameProfile, mobileProfile;
+  String emailProfile, nameProfile, surnameProfile, mobileProfile, imageProfile;
   int idConnectedUser;
   TextEditingController controllerEmail,
       controllerName,
@@ -31,15 +31,6 @@ class MapScreenState extends State<ProfilePage>
     // TODO: implement initState
     super.initState();
     getProfileInfo();
-  }
-
-  _imgFromCamera() async {
-    File image = await ImagePicker.pickImage(
-        source: ImageSource.camera, imageQuality: 50);
-
-    setState(() {
-      _image = image;
-    });
   }
 
   _imgFromGallery() async {
@@ -66,14 +57,6 @@ class MapScreenState extends State<ProfilePage>
                         _imgFromGallery();
                         Navigator.of(context).pop();
                       }),
-                  new ListTile(
-                    leading: new Icon(Icons.photo_camera),
-                    title: new Text('Camera'),
-                    onTap: () {
-                      _imgFromCamera();
-                      Navigator.of(context).pop();
-                    },
-                  ),
                 ],
               ),
             ),
@@ -81,31 +64,19 @@ class MapScreenState extends State<ProfilePage>
         });
   }
 
-  void getHttp() async {
+  void _upload() {
     if (_image == null) return;
     String base64Image = base64Encode(_image.readAsBytesSync());
     String fileName = _image.path.split("/").last;
-    try {
-      Response response = await Dio().patch(
-          "http://localhost:1337/user/edit/image/$idConnectedUser",
-          data: {"image": base64Image, "name": fileName});
-      print(response);
-    } catch (e) {
-      print(e);
-    }
-  }
 
-  void _upload() async {
-    if (_image == null) return;
-    //print(_image.readAsBytesSync());
-    String base64Image = base64Encode(_image.readAsBytesSync());
-    String fileName = _image.path.split("/").last;
-
-    final response = await http.put("http://localhost:1337/user/edit/image/$idConnectedUser", body: {
+    http.put("http://localhost:1337/user/edit/image/$idConnectedUser", body: {
       "image": base64Image,
       "name": fileName,
+    }).then((res) {
+      print(res.statusCode);
+    }).catchError((err) {
+      print(err);
     });
-   print(response.statusCode);
   }
 
   getProfileInfo() async {
@@ -121,12 +92,17 @@ class MapScreenState extends State<ProfilePage>
     nameProfile = data['prenom'];
     surnameProfile = data['name'];
     mobileProfile = data['tel_user'];
+    imageProfile = data['image_user'];
+
     setState(() {
       controllerName = TextEditingController(text: nameProfile);
       controllerSurname = TextEditingController(text: surnameProfile);
       controllerEmail = TextEditingController(text: emailProfile);
       controllerMobile = TextEditingController(text: mobileProfile);
+      //_image = File("Users/macbookpro/Desktop/ProjetFlutter/API/$imageProfile");
+      _image = File("Users/macbookpro/Desktop/ProjetFlutter/API/$imageProfile");
     });
+    print(_image);
   }
 
   editProfile(String name, String surname, String email, String phone) async {
@@ -247,8 +223,7 @@ class MapScreenState extends State<ProfilePage>
                                     ),
                                     onTap: () {
                                       _showPicker(context);
-                                        _upload();
-
+                                      _upload();
                                     },
                                   ),
                                 )
