@@ -37,6 +37,11 @@ dependencies:
   hexcolor: ^1.0.4
   image_picker: ^0.6.7+12
   dio: ^3.0.8
+  flutter_spinkit: ^4.1.2
+  google_maps_flutter: ^0.5.28+1
+  geolocator: ^5.3.1
+  flutter_polyline_points: ^0.2.1
+
 
 dev_dependencies:
   flutter_test:
