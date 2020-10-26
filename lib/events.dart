@@ -10,6 +10,12 @@ import 'dart:convert';
 import 'dart:async';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'package:camp_with_us/screens/trending.dart';
+import 'package:camp_with_us/util/categories.dart';
+import 'package:camp_with_us/util/friends.dart';
+import 'package:camp_with_us/widgets/category_item.dart';
+import 'package:camp_with_us/widgets/search_card.dart';
+import 'package:camp_with_us/widgets/slide_item.dart';
 
 import 'Entity/event.dart';
 
@@ -20,11 +26,7 @@ class Events extends StatefulWidget {
 
 class _EventState extends State<Events> {
   List<Event> _events = List<Event>();
-  File _image;
   String imageEvent;
-
- // _image = File("Users/macbookpro/Desktop/ProjetFlutter/API/$imageEvent");
-
   Future<List<Event>> fetchEvents() async {
     var response = await http.get(
         Uri.encodeFull("http://localhost:1337/evenement/show"),
@@ -54,15 +56,34 @@ class _EventState extends State<Events> {
 
   @override
   Widget build(BuildContext context) {
-    File _image;
-    String imageEvent;
+
     Locale myLocale = Localizations.localeOf(context);
     String localeDateFormatter = getLocaleDateFormatter(myLocale);
     initializeDateFormatting(localeDateFormatter);
 
 
     return Scaffold(
-      backgroundColor: HexColor("#819EA6"),
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(10.0, 0, 10.0, 0),
+        child: ListView(
+          children: <Widget>[
+            SizedBox(height: 20.0),
+            buildCategoryRow('Latest Events', context),
+            SizedBox(height: 10.0),
+            buildEventsList(context,_events),
+            SizedBox(height: 10.0),
+            buildCategoryRow('Category', context),
+            SizedBox(height: 10.0),
+            buildCategoryList(context),
+            SizedBox(height: 20.0),
+            buildCategoryRow('Followers', context),
+            SizedBox(height: 10.0),
+            buildFriendsList(),
+            SizedBox(height: 30.0),
+          ],
+        ),
+      ),
+     /* backgroundColor: HexColor("#819EA6"),
       body: Container(
         decoration: BoxDecoration(
           color: HexColor("#EDEBE6"),
@@ -214,9 +235,129 @@ class _EventState extends State<Events> {
             )
           ],
         ),
-      ),
+      ),*/
     );
   }
+}
+
+buildCategoryRow(String category, BuildContext context) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: <Widget>[
+      Text(
+        "$category",
+        style: TextStyle(
+          fontSize: 20.0,
+          fontWeight: FontWeight.w800,
+        ),
+      ),
+      FlatButton(
+        child: Text(
+          "See all",
+          style: TextStyle(
+            color: Theme.of(context).accentColor,
+          ),
+        ),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (BuildContext context) {
+                return Trending();
+              },
+            ),
+          );
+        },
+      ),
+    ],
+  );
+}
+
+buildSearchBar(BuildContext context) {
+  return PreferredSize(
+    child: Padding(
+      padding: EdgeInsets.only(
+        top: Platform.isAndroid ? 30.0 : 50.0,
+        left: 10.0,
+        right: 10.0,
+      ),
+      child: SearchCard(),
+    ),
+    preferredSize: Size(
+      MediaQuery.of(context).size.width,
+      60.0,
+    ),
+  );
+}
+
+buildCategoryList(BuildContext context) {
+  return Container(
+    height: MediaQuery.of(context).size.height / 6,
+    child: ListView.builder(
+      primary: false,
+      scrollDirection: Axis.horizontal,
+      shrinkWrap: true,
+      itemCount: categories == null ? 0 : categories.length,
+      itemBuilder: (BuildContext context, int index) {
+        Map cat = categories[index];
+
+        return CategoryItem(
+          cat: cat,
+        );
+      },
+    ),
+  );
+}
+
+buildEventsList(BuildContext context,List<Event> events) {
+  return Container(
+    height: MediaQuery.of(context).size.height / 2.4,
+    width: MediaQuery.of(context).size.width,
+    child: ListView.builder(
+      primary: false,
+      shrinkWrap: true,
+      scrollDirection: Axis.horizontal,
+      itemCount: events == null ? 0 : events.length,
+      itemBuilder: (BuildContext context, int index) {
+
+        return Padding(
+          padding: const EdgeInsets.only(right: 10.0),
+          child: SlideItem(
+            img: events[index].photo,
+            title: events[index].name,
+            address: events[index].place,
+            //rating: events["rating"],
+            date: events[index].dStart,
+          ),
+        );
+      },
+    ),
+  );
+}
+
+buildFriendsList() {
+  return Container(
+    height: 50.0,
+    child: ListView.builder(
+      primary: false,
+      scrollDirection: Axis.horizontal,
+      shrinkWrap: true,
+      itemCount: friends == null ? 0 : friends.length,
+      itemBuilder: (BuildContext context, int index) {
+        String img = friends[index];
+
+        return Padding(
+          padding: const EdgeInsets.only(right: 5.0),
+          child: CircleAvatar(
+            backgroundImage: AssetImage(
+              img,
+            ),
+            radius: 25.0,
+          ),
+        );
+      },
+    ),
+  );
 }
 
 class EventDetails extends StatefulWidget {
