@@ -1,4 +1,4 @@
-import 'package:camp_with_us/login.dart';
+import 'package:camp_with_us/screens/login.dart';
 import 'package:flutter/material.dart';
 import 'package:camp_with_us/util/const.dart';
 

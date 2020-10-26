@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-import 'main_menu.dart';
+import '../main_menu.dart';
 
 
 class Login extends StatefulWidget {

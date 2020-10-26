@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:camp_with_us/util/const.dart';
+import 'dart:io';
+
 class TrendingItem extends StatefulWidget {
   final String img;
   final String title;
   final String address;
   final String rating;
+  final String date;
 
   TrendingItem({
     Key key,
@@ -12,6 +15,7 @@ class TrendingItem extends StatefulWidget {
     @required this.title,
     @required this.address,
     @required this.rating,
+    @required this.date,
   }) : super(key: key);
 
   @override
@@ -22,8 +26,10 @@ class _TrendingItemState extends State<TrendingItem> {
   @override
   Widget build(BuildContext context) {
     return Padding(
+
       padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
       child: Container(
+
         height: MediaQuery.of(context).size.height / 2.5,
         width: MediaQuery.of(context).size.width,
         child: Card(
@@ -31,10 +37,12 @@ class _TrendingItemState extends State<TrendingItem> {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
           elevation: 3.0,
           child: Column(
+            //mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Stack(
                 children: <Widget>[
                   Container(
+
                     height: MediaQuery.of(context).size.height / 3.5,
                     width: MediaQuery.of(context).size.width,
                     child: ClipRRect(
@@ -42,8 +50,9 @@ class _TrendingItemState extends State<TrendingItem> {
                         topLeft: Radius.circular(10),
                         topRight: Radius.circular(10),
                       ),
-                      child: Image.asset(
-                        "${widget.img}",
+                      child: Image.file(
+                        File(
+                            'Users/macbookpro/Desktop/ProjetFlutter/API/${widget.img}'),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -96,35 +105,82 @@ class _TrendingItemState extends State<TrendingItem> {
                 ],
               ),
               SizedBox(height: 7.0),
-              Padding(
-                padding: EdgeInsets.only(left: 15.0),
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  child: Text(
-                    "${widget.title}",
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.w800,
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.only(left: 15.0),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    child: Text(
+                      "${widget.title}",
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.w800,
+                      ),
+                      textAlign: TextAlign.left,
                     ),
-                    textAlign: TextAlign.left,
                   ),
                 ),
               ),
               SizedBox(height: 7.0),
-              Padding(
-                padding: EdgeInsets.only(left: 15.0),
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  child: Text(
-                    "${widget.address}",
-                    style: TextStyle(
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w300,
-                    ),
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.only(left: 15.0),
+                  child: Row(
+                    //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(
+                        child: Icon(
+                          Icons.place,
+                          color: Colors.red,
+                        ),
+                      ),
+                      Flexible(
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          child: Text(
+                            "${widget.address}",
+                            style: TextStyle(
+                              fontSize: 12.0,
+                              fontWeight: FontWeight.w300,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
               SizedBox(height: 10.0),
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.only(left: 15.0),
+                  child: Row(
+                    //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(
+                        child: Icon(
+                          Icons.calendar_today,
+                          color: Colors.blueAccent,
+                        ),
+                      ),
+                      Flexible(
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          child: Text(
+                            "${widget.date}",
+                            style: TextStyle(
+                              fontSize: 12.0,
+                              fontWeight: FontWeight.w300,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              //SizedBox(height: 10.0),
             ],
           ),
         ),

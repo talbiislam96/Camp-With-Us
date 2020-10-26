@@ -47,9 +47,11 @@ class _SlideItemState extends State<SlideItem> {
                         topLeft: Radius.circular(10.0),
                         topRight: Radius.circular(10.0),
                       ),
-                      child: Image.file(File('Users/macbookpro/Desktop/ProjetFlutter/API/${widget.img}'),
-                      fit: BoxFit.cover,),
-
+                      child: Image.file(
+                        File(
+                            'Users/macbookpro/Desktop/ProjetFlutter/API/${widget.img}'),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                   Positioned(
