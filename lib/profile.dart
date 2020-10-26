@@ -84,7 +84,7 @@ class MapScreenState extends State<ProfilePage>
     idConnectedUser = preferences.getInt("id");
     print("connected user id:" + idConnectedUser.toString());
     final response =
-    await http.get("http://localhost:1337/user/show/$idConnectedUser");
+    await http.get("http://10.0.2.2:1337/user/show/$idConnectedUser");
 
     final data = jsonDecode(response.body);
 
@@ -100,7 +100,9 @@ class MapScreenState extends State<ProfilePage>
       controllerEmail = TextEditingController(text: emailProfile);
       controllerMobile = TextEditingController(text: mobileProfile);
       //_image = File("Users/macbookpro/Desktop/ProjetFlutter/API/$imageProfile");
-      _image = File("Users/macbookpro/Desktop/ProjetFlutter/API/$imageProfile");
+      //_image = File("Users/macbookpro/Desktop/ProjetFlutter/API/$imageProfile");
+      _image = File("C:/Users/islam/Desktop/camp_with_us/$imageProfile");
+
     });
     print(_image);
   }
@@ -109,7 +111,7 @@ class MapScreenState extends State<ProfilePage>
     SharedPreferences preferences = await SharedPreferences.getInstance();
     idConnectedUser = preferences.getInt("id");
     final response = await http
-        .put("http://localhost:1337/user/edit/$idConnectedUser", body: {
+        .put("http://10.0.2.2:1337/user/edit/$idConnectedUser", body: {
       "prenom": name,
       "name": surname,
       "email": email,
