@@ -5,6 +5,13 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:camp_with_us/locale_time_toolkit.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'dart:async';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+
+import 'Entity/event.dart';
 
 class Events extends StatefulWidget {
   @override
@@ -12,8 +19,48 @@ class Events extends StatefulWidget {
 }
 
 class _EventState extends State<Events> {
+  List<Event> _events = List<Event>();
+  File _image;
+  String imageEvent;
+
+ // _image = File("Users/macbookpro/Desktop/ProjetFlutter/API/$imageEvent");
+
+  Future<List<Event>> fetchEvents() async {
+    var response = await http.get(
+        Uri.encodeFull("http://localhost:1337/evenement/show"),
+        headers: {"Accept": "application/json"});
+    var events = List<Event>();
+
+    if (response.statusCode == 200) {
+      var eventsJson = json.decode(response.body);
+      print(eventsJson);
+      for (var eventJson in eventsJson) {
+        events.add(Event.fromJson(eventJson));
+      }
+    }
+    return events;
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fetchEvents().then((value){
+      setState(() {
+        _events.addAll(value);
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    File _image;
+    String imageEvent;
+    Locale myLocale = Localizations.localeOf(context);
+    String localeDateFormatter = getLocaleDateFormatter(myLocale);
+    initializeDateFormatting(localeDateFormatter);
+
+
     return Scaffold(
       backgroundColor: HexColor("#819EA6"),
       body: Container(
@@ -32,168 +79,141 @@ class _EventState extends State<Events> {
                     flex: 1,
                     child: ListView.builder(
                         padding: EdgeInsets.only(top: 0),
-                        itemCount: 7,
+                        itemCount: _events.length,
                         itemBuilder: (context, index) {
-                          return EventTile();
+                          return Container(
+                            margin: EdgeInsets.only(
+                              top: 10,
+                              left: 4,
+                              right: 4,
+                            ),
+                            padding: EdgeInsets.only(
+                                top: 10, bottom: 10, left: 10, right: 10),
+                            decoration: BoxDecoration(
+                                color: HexColor("#819EA6"),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10.0)),
+                                boxShadow: [
+                                  new BoxShadow(
+                                    color: HexColor("#EDEBE6"),
+                                    blurRadius: 2.0,
+                                    offset: Offset(
+                                      2.0, // Move to right 10  horizontally
+                                      2.0, // Move to bottom 10 Vertically
+                                    ),
+                                  ),
+                                ]),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: <Widget>[
+                                Container(
+                                  child: Row(
+                                    children: <Widget>[
+                                      Expanded(
+                                          child: Icon(
+                                        Icons.star,
+                                        color: Colors.black,
+                                        size: 15.0,
+                                      )),
+                                      Expanded(
+                                          child: Text(
+                                        _events[index].name,
+                                        style: TextStyle(
+                                            color: HexColor("#EDEBE6"),
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
+                                      )),
+                                      Expanded(
+                                          child: Icon(
+                                        Icons.location_on,
+                                        color: Colors.black,
+                                        size: 15.0,
+                                      )),
+                                      Expanded(
+                                          child: Text(
+                                            _events[index].place,
+                                        style: TextStyle(
+                                            color: HexColor("#EDEBE6"),
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
+                                      )),
+                                      Container(
+                                        margin: EdgeInsets.all(5.0),
+                                        decoration: BoxDecoration(
+                                          color: HexColor("#EDEBE6"),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child:
+                                        Image.file(File('Users/macbookpro/Desktop/ProjetFlutter/API/${_events[index].photo}')),
+
+                                        height: 100,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.only(top: 10),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Expanded(
+                                        child: Text(
+                                          _events[index].dStart,
+                                          maxLines: 3,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            color: HexColor("#EDEBE6"),
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          'Learn more',
+                                          maxLines: 3,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            color: HexColor("#EDEBE6"),
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                          child: GestureDetector(
+                                        child: Icon(
+                                          Icons.arrow_forward,
+                                          color: Colors.black,
+                                          size: 30.0,
+                                        ),
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    EventDetails()),
+                                          );
+                                        },
+                                      )),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
                         }),
                   ),
                 ],
               ),
             ),
-
             FloatingActionButton(
               onPressed: () {
                 // Add your onPressed code here!
               },
               child: Icon(Icons.add),
               backgroundColor: Colors.blueGrey,
-
             )
           ],
         ),
-
-
-
-
-      ),
-
-
-
-    );
-  }
-}
-
-class EventTile extends StatefulWidget {
-  @override
-  _EventTileState createState() => _EventTileState();
-}
-
-class _EventTileState extends State<EventTile> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    Locale myLocale = Localizations.localeOf(context);
-    String localeDateFormatter = getLocaleDateFormatter(myLocale);
-    initializeDateFormatting(localeDateFormatter);
-
-    return Container(
-      margin: EdgeInsets.only(
-        top: 10,
-        left: 4,
-        right: 4,
-      ),
-      padding: EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
-      decoration: BoxDecoration(
-          color: HexColor("#819EA6"),
-          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-          boxShadow: [
-            new BoxShadow(
-              color: HexColor("#EDEBE6"),
-              blurRadius: 2.0,
-              offset: Offset(
-                2.0, // Move to right 10  horizontally
-                2.0, // Move to bottom 10 Vertically
-              ),
-            ),
-          ]),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Container(
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                    child: Icon(
-                  Icons.star,
-                  color: Colors.black,
-                  size: 15.0,
-                )),
-                Expanded(
-                    child: Text(
-                  'Event Name ',
-                  style: TextStyle(
-                      color: HexColor("#EDEBE6"),
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold),
-                )),
-                Expanded(
-                    child: Icon(
-                  Icons.location_on,
-                  color: Colors.black,
-                  size: 15.0,
-                )),
-                Expanded(
-                    child: Text(
-                  'Location ',
-                  style: TextStyle(
-                      color: HexColor("#EDEBE6"),
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold),
-                )),
-                Container(
-                  margin: EdgeInsets.all(5.0),
-                  decoration: BoxDecoration(
-                    color: HexColor("#EDEBE6"),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Image.asset("assets/logo.png"),
-                  height: 100,
-                ),
-              ],
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.only(top: 10),
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  child: Text(
-                    DateFormat.yMd(localeDateFormatter)
-                        .format(new DateTime.now()),
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      color: HexColor("#EDEBE6"),
-                      fontSize: 12,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Text(
-                    'Learn more',
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      color: HexColor("#EDEBE6"),
-                      fontSize: 12,
-                    ),
-                  ),
-                ),
-                Expanded(
-                    child: GestureDetector(
-                  child: Icon(
-                    Icons.arrow_forward,
-                    color: Colors.black,
-                    size: 30.0,
-                  ),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => EventDetails()),
-                    );
-                  },
-                )),
-              ],
-            ),
-          ),
-
-
-
-        ],
       ),
     );
   }
