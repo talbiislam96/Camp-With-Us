@@ -108,7 +108,7 @@ class _MainMenuState extends State<MainMenu> {
   signOut() {
     setState(() {
       widget.signOut();
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => Login()),
       );

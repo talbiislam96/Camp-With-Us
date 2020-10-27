@@ -15,7 +15,10 @@ class Login extends StatefulWidget {
 
 enum LoginStatus { notSignIn, signIn }
 
-class _LoginState extends State<Login> {
+class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
+  AnimationController _controller;
+  Animation _animation;
+
   LoginStatus _loginStatus = LoginStatus.notSignIn;
   String email, password;
   final _key = new GlobalKey<FormState>();
@@ -62,10 +65,13 @@ class _LoginState extends State<Login> {
         savePref(emailAPI, nameAPI, surnameAPI, id);
       });
       print("successfully logged in");
-      Navigator.push(
+      //Navigator.pushReplacementNamed(context, "/logout");
+
+        Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => MainMenu(signOut)),
       );
+
     }
   }
 
@@ -118,8 +124,29 @@ class _LoginState extends State<Login> {
   void initState() {
     super.initState();
     getPref();
-  }
+    _controller =
+        AnimationController(vsync: this, duration: Duration(seconds: 2));
+    _animation = Tween(begin: 50.0, end: 200.0).animate(_controller)
+      ..addStatusListener((state) {
+        if (state == AnimationStatus.completed) {
+          print("completed");
+        } else if (state == AnimationStatus.dismissed) {
+          print("dismissed");
+        }
+      })
+      ..addListener(() {
+        setState(() {
 
+        });
+        print("value:${_animation.value}");
+      });
+    _controller.forward();
+  }
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     //switch (_loginStatus) {
@@ -143,16 +170,22 @@ class _LoginState extends State<Login> {
                     children: <Widget>[
                       Container(
                         alignment: Alignment.center,
-                        child: Container(
-                          width: 200.0,
-                          height: 200.0,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30.0),
-                              image: DecorationImage(
-                                  image: AssetImage(
-                                    "assets/logo.png",
-                                  ),
-                                  fit: BoxFit.cover)),
+                        child: Transform.rotate(
+                          angle: -2*3.14*_animation.value/200,
+                          child: Container(
+                            width: _animation.value,
+                            height: _animation.value,
+                            decoration: BoxDecoration(
+
+                                borderRadius: BorderRadius.circular(30.0),
+                                image: DecorationImage(
+
+                                    image: AssetImage(
+
+                                      "assets/logo.png",
+                                    ),
+                                    fit: BoxFit.cover)),
+                          ),
                         ),
                       ),
                       SizedBox(
