@@ -1,3 +1,4 @@
+import 'package:camp_with_us/Entity/following.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,7 +26,30 @@ class Events extends StatefulWidget {
 
 class _EventState extends State<Events> {
   List<Event> _events = List<Event>();
+  List<Following> _followings = List<Following>();
+int idConnectedUser;
   String imageEvent;
+  String imageFollowing;
+
+
+  Future<List<Following>> fetchFollowings() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    idConnectedUser = preferences.getInt("id");
+    var response = await http.get(
+        Uri.encodeFull("http://localhost:1337/follow/show/$idConnectedUser"),
+        headers: {"Accept": "application/json"});
+    var followings = List<Following>();
+
+    if (response.statusCode == 200) {
+      var eventsJson = json.decode(response.body);
+      print(eventsJson);
+      for (var eventJson in eventsJson) {
+        followings.add(Following.fromJson(eventJson));
+      }
+    }
+    return followings;
+  }
+
   Future<List<Event>> fetchEvents() async {
     var response = await http.get(
         Uri.encodeFull("http://localhost:1337/evenement/show"),
@@ -49,6 +73,11 @@ class _EventState extends State<Events> {
     fetchEvents().then((value){
       setState(() {
         _events.addAll(value);
+      });
+    });
+    fetchFollowings().then((value){
+      setState(() {
+        _followings.addAll(value);
       });
     });
   }
@@ -75,9 +104,9 @@ class _EventState extends State<Events> {
             SizedBox(height: 10.0),
             buildCategoryList(context),
             SizedBox(height: 20.0),
-            buildCategoryRow('Followers', context),
+            buildCategoryRowWithoutText('Following', context),
             SizedBox(height: 10.0),
-            buildFriendsList(),
+            buildFriendsList(context, _followings),
             SizedBox(height: 30.0),
           ],
         ),
@@ -114,6 +143,20 @@ buildCategoryRow(String category, BuildContext context) {
             ),
           );
         },
+      ),
+    ],
+  );
+}
+buildCategoryRowWithoutText(String category, BuildContext context) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: <Widget>[
+      Text(
+        "$category",
+        style: TextStyle(
+          fontSize: 20.0,
+          fontWeight: FontWeight.w800,
+        ),
       ),
     ],
   );
@@ -181,24 +224,34 @@ buildEventsList(BuildContext context,List<Event> events) {
   );
 }
 
-buildFriendsList() {
+buildFriendsList(BuildContext context,List<Following> followings) {
   return Container(
     height: 50.0,
     child: ListView.builder(
       primary: false,
       scrollDirection: Axis.horizontal,
       shrinkWrap: true,
-      itemCount: friends == null ? 0 : friends.length,
+      itemCount: followings == null ? 0 : followings.length,
       itemBuilder: (BuildContext context, int index) {
-        String img = friends[index];
+        File img = File('Users/macbookpro/Desktop/ProjetFlutter/API/${followings[index].image}');
 
         return Padding(
-          padding: const EdgeInsets.only(right: 5.0),
-          child: CircleAvatar(
-            backgroundImage: AssetImage(
-              img,
-            ),
-            radius: 25.0,
+          padding: const EdgeInsets.only(right: 8.0),
+          child: Column(
+            children: [
+              GestureDetector(
+                child: CircleAvatar(
+                  backgroundImage: FileImage(
+                    img,
+                  ),
+                  radius: 25.0,
+                ),
+                onTap: (){
+                  print("friend clicked");
+                },
+              ),
+
+            ],
           ),
         );
       },
