@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:camp_with_us/screens/event_details.dart';
 import 'package:flutter/material.dart';
 import 'package:camp_with_us/util/const.dart';
+import 'package:camp_with_us/screens/events.dart';
 
 class SlideItem extends StatefulWidget {
   final String img;
@@ -36,6 +38,7 @@ class _SlideItemState extends State<SlideItem> {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
           elevation: 3.0,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Stack(
                 children: <Widget>[
@@ -47,11 +50,20 @@ class _SlideItemState extends State<SlideItem> {
                         topLeft: Radius.circular(10.0),
                         topRight: Radius.circular(10.0),
                       ),
-                      child: Image.file(
-                        File(
-                            'Users/macbookpro/Desktop/ProjetFlutter/API/${widget.img}'),
+
+
+                      //child: //Image.file(
+                      //File(
+                      //   'Users/macbookpro/Desktop/ProjetFlutter/API/${widget.img}'),
+                      // fit: BoxFit.cover,
+                      //),
+                      child: Image.asset('assets/backgroundProfile.jpg',
                         fit: BoxFit.cover,
+
+
                       ),
+
+
                     ),
                   ),
                   Positioned(
@@ -140,6 +152,26 @@ class _SlideItemState extends State<SlideItem> {
                         ),
                       ),
                     ),
+                    FlatButton(
+                      child: Text(
+                        "Learn more",
+                        style: TextStyle(
+                          color: Theme.of(context).accentColor,
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) {
+                              return EventDetails();
+                            },
+                          ),
+                        );
+                      },
+                    ),
+
+
                   ],
                 ),
               ),

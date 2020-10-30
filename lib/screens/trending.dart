@@ -19,7 +19,8 @@ class _TrendingState extends State<Trending> {
 
   Future<List<Event>> fetchEvents() async {
     var response = await http.get(
-        Uri.encodeFull("http://localhost:1337/evenement/show"),
+        //Uri.encodeFull("http://localhost:1337/evenement/show"),
+        Uri.encodeFull("http://10.0.2.2:1337/evenement/show"),
         headers: {"Accept": "application/json"});
     var events = List<Event>();
 

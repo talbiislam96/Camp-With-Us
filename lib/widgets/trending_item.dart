@@ -50,11 +50,18 @@ class _TrendingItemState extends State<TrendingItem> {
                         topLeft: Radius.circular(10),
                         topRight: Radius.circular(10),
                       ),
-                      child: Image.file(
-                        File(
-                            'Users/macbookpro/Desktop/ProjetFlutter/API/${widget.img}'),
+                      //child: //Image.file(
+                        //File(
+                         //   'Users/macbookpro/Desktop/ProjetFlutter/API/${widget.img}'),
+                       // fit: BoxFit.cover,
+                      //),
+                      child: Image.asset('assets/backgroundProfile.jpg',
                         fit: BoxFit.cover,
+
+
                       ),
+
+
                     ),
                   ),
                   Positioned(
