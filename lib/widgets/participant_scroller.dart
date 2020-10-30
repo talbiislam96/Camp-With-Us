@@ -14,12 +14,14 @@ class ActorScroller extends StatelessWidget {
       child: Column(
         children: [
           CircleAvatar(
-            backgroundImage: AssetImage(following.image),
+            //backgroundImage: AssetImage(following.image),
+            backgroundImage: AssetImage('assets/user_profile'),
             radius: 40.0,
           ),
           Padding(
             padding: const EdgeInsets.only(top: 8.0),
-            child: Text(following.name),
+            //child: Text(following.name),
+            child: Text('test'),
           ),
         ],
       ),
@@ -43,7 +45,8 @@ class ActorScroller extends StatelessWidget {
         SizedBox.fromSize(
           size: const Size.fromHeight(120.0),
           child: ListView.builder(
-            itemCount: followers.length,
+            //itemCount: followers.length,
+            itemCount: 5,
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.only(top: 12.0, left: 20.0),
             itemBuilder: _buildActor,

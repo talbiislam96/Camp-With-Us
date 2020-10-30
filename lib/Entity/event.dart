@@ -13,6 +13,8 @@ class Event {
    int nbrPlaces;
    String description;
    int userId;
+   final double rating;
+   final int starRating;
 
 
   Event(
@@ -29,7 +31,9 @@ class Event {
       this.price,
       this.nbrPlaces,
       this.description,
-      this.userId);
+      this.userId,
+      this.rating,
+      this.starRating);
 
    Event.fromJson(Map<String, dynamic> json) {
         id = json['id_evenement'];
