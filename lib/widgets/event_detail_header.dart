@@ -1,6 +1,8 @@
 import 'package:camp_with_us/Entity/following.dart';
+import 'package:camp_with_us/widgets/rating_imformation.dart';
 import 'package:flutter/material.dart';
 import '../Entity/event.dart';
+import 'banner_image.dart';
 
 
 class MovieDetailHeader extends StatelessWidget {
@@ -32,9 +34,36 @@ class MovieDetailHeader extends StatelessWidget {
           style: textTheme.title,
         ),
         SizedBox(height: 8.0),
-        RatingInformation(movie),
+        RatingInformation(event),
         SizedBox(height: 12.0),
-        Row(children: _buildCategoryChips(textTheme)),
+        Row(children: <Widget>[
+          Flexible(
+            child: Padding(
+          padding: const EdgeInsets.only(right: 8.0),
+          child: Chip(
+           label: Text('location'),
+          labelStyle: textTheme.caption,
+           backgroundColor: Colors.black12,
+           ),
+          ),
+
+          ),
+
+
+
+          Flexible(
+            child: Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: Chip(
+                label: Text('distance'),
+                labelStyle: textTheme.caption,
+                backgroundColor: Colors.black12,
+              ),
+            ),
+
+          )
+
+        ],),
       ],
     );
 
@@ -42,7 +71,7 @@ class MovieDetailHeader extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.only(bottom: 140.0),
-          child: ArcBannerImage(movie.bannerUrl),
+          child: ArcBannerImage(),
         ),
         Positioned(
           bottom: 0.0,
@@ -52,9 +81,10 @@ class MovieDetailHeader extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Poster(
-                movie.posterUrl,
-                height: 180.0,
+              CircleAvatar(
+                //backgroundImage: AssetImage(following.image),
+                backgroundImage: NetworkImage('https://img.freepik.com/free-psd/young-man-placing-his-hands-hips_1187-6830.jpg?size=338&ext=jpg'),
+                radius: 40.0,
               ),
               SizedBox(width: 16.0),
               Expanded(child: movieInformation),

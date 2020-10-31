@@ -10,9 +10,9 @@ ArcBannerImage();
 
     return ClipPath(
       clipper: ArcClipper(),
-      child: Image.asset(
+      child: Image.network(
         //imageUrl,
-        'assets/backgroundProfile',
+        'https://www.tripsavvy.com/thmb/CyXuQJWabjrBCRBCVmP4TbBAOmA=/950x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/sunrise-camping--676019412-5b873a5a46e0fb0050f2b7e0.jpg',
         width: screenWidth,
         height: 230.0,
         fit: BoxFit.cover,

@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import '../Entity/event.dart';
 
 class ActorScroller extends StatelessWidget {
-  ActorScroller(this.followers);
-  final List<Following> followers;
+  //ActorScroller(this.followers);
+  //final List<Following> followers;
+  ActorScroller();
 
   Widget _buildActor(BuildContext ctx, int index) {
-    var following = followers[index];
+    //var following = followers[index];
 
     return Padding(
       padding: const EdgeInsets.only(right: 16.0),
@@ -15,7 +16,7 @@ class ActorScroller extends StatelessWidget {
         children: [
           CircleAvatar(
             //backgroundImage: AssetImage(following.image),
-            backgroundImage: AssetImage('assets/user_profile'),
+            backgroundImage: NetworkImage('https://img.freepik.com/free-psd/young-man-placing-his-hands-hips_1187-6830.jpg?size=338&ext=jpg'),
             radius: 40.0,
           ),
           Padding(

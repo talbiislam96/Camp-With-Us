@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:camp_with_us/Entity/event.dart';
 import 'package:camp_with_us/screens/event_details.dart';
 import 'package:flutter/material.dart';
 import 'package:camp_with_us/util/const.dart';
@@ -11,6 +12,8 @@ class SlideItem extends StatefulWidget {
   final String address;
   final String rating;
   final String date;
+  final Event event;
+
 
   SlideItem({
     Key key,
@@ -19,6 +22,9 @@ class SlideItem extends StatefulWidget {
     @required this.address,
     @required this.rating,
     @required this.date,
+    this.event,
+
+
   }) : super(key: key);
 
   @override
@@ -26,6 +32,8 @@ class SlideItem extends StatefulWidget {
 }
 
 class _SlideItemState extends State<SlideItem> {
+  Event get event => null;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -164,7 +172,7 @@ class _SlideItemState extends State<SlideItem> {
                           context,
                           MaterialPageRoute(
                             builder: (BuildContext context) {
-                              return EventDetails();
+                              return EventDetailsPage(event);
                             },
                           ),
                         );

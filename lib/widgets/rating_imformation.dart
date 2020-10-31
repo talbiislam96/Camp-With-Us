@@ -9,10 +9,10 @@ class RatingInformation extends StatelessWidget {
     var stars = <Widget>[];
 
     for (var i = 1; i <= 5; i++) {
-      var color = i <= event.starRating ? theme.accentColor : Colors.black12;
+      //var color = i <= event.starRating ? theme.accentColor : Colors.black12;
       var star = Icon(
         Icons.star,
-        color: color,
+        color: Colors.yellow,
       );
 
       stars.add(star);
@@ -32,7 +32,8 @@ class RatingInformation extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          event.rating.toString(),
+          //event.rating.toString(),
+          '8',
           style: textTheme.title.copyWith(
             fontWeight: FontWeight.w400,
             color: theme.accentColor,

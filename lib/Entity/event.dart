@@ -13,8 +13,8 @@ class Event {
    int nbrPlaces;
    String description;
    int userId;
-   final double rating;
-   final int starRating;
+   double rating;
+   int starRating;
 
 
   Event(
@@ -52,7 +52,10 @@ class Event {
         userId = json['id_user'];
 
 
-    /*name: json['nom_evenement'],
+
+
+
+     /*name: json['nom_evenement'],
       type: json['type_evenement'],
         dStart: json['date_debut_evenement'],
         dEnd: json['date_fin_evenement'],
