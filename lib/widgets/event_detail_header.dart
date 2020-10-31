@@ -69,14 +69,26 @@ class MovieDetailHeader extends StatelessWidget {
 
     return Stack(
       children: [
+
         Padding(
           padding: const EdgeInsets.only(bottom: 140.0),
           child: ArcBannerImage(),
         ),
         Positioned(
+          left: 8.0,
+          top: 60.0,
+          child: InkWell(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Icon(Icons.arrow_back, color: Colors.black),
+          ),
+        ),
+        Positioned(
           bottom: 0.0,
           left: 16.0,
           right: 16.0,
+
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisAlignment: MainAxisAlignment.end,

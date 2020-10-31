@@ -20,7 +20,7 @@ class Storyline extends StatelessWidget {
         ),
         SizedBox(height: 8.0),
         Text(
-         "this is a description of an event that hasn't been made yet , this is illusion this is unreal, believe me this is nothing add some life to this ",
+         "this is a description of an event that hasn't been made yet , this is illusion this is unreal, believe me this is nothing add some life to this.I am sleepy but i need to keep working , writing nonsense just to test the see more button f my life am tired need a break , i need food , probably a cigarette too , this is weird i know but that's all am about tbh ... ",
           style: textTheme.body1.copyWith(
             color: Colors.black45,
             fontSize: 16.0,
