@@ -86,7 +86,7 @@ class _MainMenuState extends State<MainMenu> {
         onPressed: (){
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => Add()),
+            MaterialPageRoute(builder: (context) => AddEventPage()),
           );
 
 

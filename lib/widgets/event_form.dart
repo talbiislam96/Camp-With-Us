@@ -2,7 +2,10 @@ import 'dart:async';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../widgets/calendar_picker.dart';
+
+import 'calender_picker.dart';
+
+
 
 
 class EditEventForm extends StatefulWidget {
@@ -10,15 +13,57 @@ class EditEventForm extends StatefulWidget {
   State<StatefulWidget> createState() => new EditEventFormState();
 
   final void Function(Map<String, dynamic>) _submitFormCallback;
-
-  EditEventForm();
+  final Map _startingData;
+  EditEventForm(this._submitFormCallback, this._startingData);
 
 }
 
 class EditEventFormState extends State<EditEventForm> {
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
+  num _latitude;
+  num _longitude;
+  final TextEditingController _startTimeController = new TextEditingController();
+  final TextEditingController _endTimeController = new TextEditingController();
+  final TextEditingController _titleController = new TextEditingController();
+  final TextEditingController _descriptionController = new TextEditingController();
+  final TextEditingController _latitudeController = new TextEditingController();
+  final TextEditingController _longitudeController = new TextEditingController();
 
+  @override
+  void initState() {
+    if(!(widget._startingData == null)) {
+      _startTimeController.text = DateFormat(CalendarPickerState.timeFormat).format(widget._startingData["start-time"]);
+      _endTimeController.text = DateFormat(CalendarPickerState.timeFormat).format(widget._startingData["end-time"]);
+      _titleController.text = widget._startingData["name"];
+      _descriptionController.text = widget._startingData["description"];
+      _latitudeController.text = widget._startingData["location"].latitude.toString();
+      _longitudeController.text = widget._startingData["location"].longitude.toString();
+    }
+    super.initState();
+  }
+
+  ///Submits the form
+  ///
+  /// The form fields are first validated, and then the event details are based
+  /// to a the [widget._submitFormCallback]
+  void submitForm () async {
+    final FormState form = _formKey.currentState;
+
+
+    if (form.validate()) {
+      form.save();
+
+      widget._submitFormCallback(<String, dynamic>{
+        "name": _titleController.text,
+        "description": _descriptionController.text,
+        //"location": new GeoPoint(_latitude, _longitude),
+        "start-time": CalendarPickerState.stringToDate(_startTimeController.text),
+        "end-time": CalendarPickerState.stringToDate(_endTimeController.text)
+      });
+    }
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +78,7 @@ class EditEventFormState extends State<EditEventForm> {
               new Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
                 child: new TextFormField(
+                  controller: _titleController,
                   decoration: new InputDecoration(
                     labelText: "Event Name",
                     border: new OutlineInputBorder(),
@@ -42,7 +88,7 @@ class EditEventFormState extends State<EditEventForm> {
                 ),
               ),
               new TextFormField(
-
+                controller: _descriptionController,
                 decoration: new InputDecoration(
                   labelText: "Description",
                   border: new OutlineInputBorder(),
@@ -86,3 +132,4 @@ class EditEventFormState extends State<EditEventForm> {
       ),
     );
   }
+}
