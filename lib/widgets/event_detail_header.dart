@@ -1,25 +1,26 @@
 import 'package:camp_with_us/Entity/following.dart';
+import 'package:camp_with_us/article.dart';
+import 'package:camp_with_us/screens/event_creator_profile.dart';
 import 'package:camp_with_us/widgets/rating_imformation.dart';
 import 'package:flutter/material.dart';
 import '../Entity/event.dart';
 import 'banner_image.dart';
-
 
 class MovieDetailHeader extends StatelessWidget {
   MovieDetailHeader(this.event);
   final Event event;
   //MovieDetailHeader();
   //List<Widget> _buildCategoryChips(TextTheme textTheme) {
-    //return mo.categories.map((category) {
-      //return Padding(
-        //padding: const EdgeInsets.only(right: 8.0),
-        //child: Chip(
-         // label: Text(category),
-          //labelStyle: textTheme.caption,
-         // backgroundColor: Colors.black12,
-       // ),
-      //);
-   // }).toList();
+  //return mo.categories.map((category) {
+  //return Padding(
+  //padding: const EdgeInsets.only(right: 8.0),
+  //child: Chip(
+  // label: Text(category),
+  //labelStyle: textTheme.caption,
+  // backgroundColor: Colors.black12,
+  // ),
+  //);
+  // }).toList();
   //}
 
   @override
@@ -36,40 +37,47 @@ class MovieDetailHeader extends StatelessWidget {
         SizedBox(height: 8.0),
         RatingInformation(event),
         SizedBox(height: 12.0),
-        Row(children: <Widget>[
-          Flexible(
-            child: Padding(
-          padding: const EdgeInsets.only(right: 8.0),
-          child: Chip(
-           label: Text('location'),
-          labelStyle: textTheme.caption,
-           backgroundColor: Colors.black12,
-           ),
-          ),
-
-          ),
-
-
-
-          Flexible(
-            child: Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: Chip(
-                label: Text('distance'),
-                labelStyle: textTheme.caption,
-                backgroundColor: Colors.black12,
+        Row(
+          children: <Widget>[
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: Chip(
+                  label: Text('location'),
+                  labelStyle: textTheme.caption,
+                  backgroundColor: Colors.black12,
+                ),
               ),
             ),
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: Chip(
+                  label: Text('distance'),
+                  labelStyle: textTheme.caption,
+                  backgroundColor: Colors.black12,
+                ),
+              ),
+            ),
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: Chip(
+                  label: Text('phone number'),
+                  labelStyle: textTheme.caption,
+                  backgroundColor: Colors.black12,
+                ),
+              ),
 
-          )
+            ),
 
-        ],),
+          ],
+        ),
       ],
     );
 
     return Stack(
       children: [
-
         Padding(
           padding: const EdgeInsets.only(bottom: 140.0),
           child: ArcBannerImage(),
@@ -88,15 +96,23 @@ class MovieDetailHeader extends StatelessWidget {
           bottom: 0.0,
           left: 16.0,
           right: 16.0,
-
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              CircleAvatar(
-                //backgroundImage: AssetImage(following.image),
-                backgroundImage: NetworkImage('https://img.freepik.com/free-psd/young-man-placing-his-hands-hips_1187-6830.jpg?size=338&ext=jpg'),
-                radius: 40.0,
+              GestureDetector(
+                child: CircleAvatar(
+                  //backgroundImage: AssetImage(following.image),
+                  backgroundImage: NetworkImage(
+                      'https://img.freepik.com/free-psd/young-man-placing-his-hands-hips_1187-6830.jpg?size=338&ext=jpg'),
+                  radius: 40.0,
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CreatorProfile()),
+                  );
+                },
               ),
               SizedBox(width: 16.0),
               Expanded(child: movieInformation),
