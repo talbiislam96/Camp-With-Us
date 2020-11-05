@@ -179,9 +179,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
 
                                 borderRadius: BorderRadius.circular(30.0),
                                 image: DecorationImage(
-
                                     image: AssetImage(
-
                                       "assets/logo.png",
                                     ),
                                     fit: BoxFit.cover)),
