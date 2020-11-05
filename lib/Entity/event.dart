@@ -13,6 +13,8 @@ class Event {
    int nbrPlaces;
    String description;
    int userId;
+   double rating;
+   int starRating;
 
 
   Event(
@@ -29,7 +31,9 @@ class Event {
       this.price,
       this.nbrPlaces,
       this.description,
-      this.userId);
+      this.userId,
+      this.rating,
+      this.starRating);
 
    Event.fromJson(Map<String, dynamic> json) {
         id = json['id_evenement'];
@@ -48,7 +52,10 @@ class Event {
         userId = json['id_user'];
 
 
-    /*name: json['nom_evenement'],
+
+
+
+     /*name: json['nom_evenement'],
       type: json['type_evenement'],
         dStart: json['date_debut_evenement'],
         dEnd: json['date_fin_evenement'],

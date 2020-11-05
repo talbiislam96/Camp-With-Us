@@ -40,8 +40,8 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
   }
 
   login() async {
-    //final response = await http.post("http://10.0.2.2:1337/login", body: {
-    final response = await http.post("http://localhost:1337/login", body: {
+    final response = await http.post("http://10.0.2.2:1337/login", body: {
+    //final response = await http.post("http://localhost:1337/login", body: {
 
     "email": email,
       "password": password,
@@ -362,8 +362,8 @@ class _RegisterState extends State<Register> {
   }
 
   save() async {
-    //final response = await http.post("http://10.0.2.2:1337/register", body: {
-    final response = await http.post("http://localhost:1337/register", body: {
+    final response = await http.post("http://10.0.2.2:1337/register", body: {
+    //final response = await http.post("http://localhost:1337/register", body: {
 
     "prenom": name,
       "name": surname,
