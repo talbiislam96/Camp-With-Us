@@ -26,16 +26,14 @@ class _MainMenuState extends State<MainMenu> {
 
   List icons = [
     Icons.home,
-    Icons.label,
     Icons.add,
-    Icons.notifications,
     Icons.person,
+   // Icons.ac_unit,
   ];
   List<Widget> _widgetOptions = <Widget>[
     Events(),
-    Article(),
-    Article(),
-    ProfilePage()
+    AddEventPage(),
+    ProfilePage(),
   ];
 
   @override
@@ -63,13 +61,11 @@ class _MainMenuState extends State<MainMenu> {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            SizedBox(width: 7),
+            SizedBox(width: 5),
             buildTabIcon(0),
             buildTabIcon(1),
             buildTabIcon(2),
-            buildTabIcon(3),
-            buildTabIcon(4),
-            SizedBox(width: 7),
+            SizedBox(width: 5),
           ],
         ),
         color: Theme.of(context).primaryColor,
@@ -82,15 +78,15 @@ class _MainMenuState extends State<MainMenu> {
         child: Icon(
           Icons.add,
         ),
-        //onPressed: () => _pageController.jumpToPage(_page),
-        onPressed: (){
+        onPressed: () => _pageController.jumpToPage(1),
+       /* onPressed: (){
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => AddEventPage()),
           );
 
 
-        },
+        },*/
       ),
     );
   }
@@ -147,7 +143,7 @@ class _MainMenuState extends State<MainMenu> {
   }
 
   buildTabIcon(int index) {
-    if (index == 2) {
+    if (index == 1) {
       return IconButton(
         icon: Icon(
           icons[index],

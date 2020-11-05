@@ -60,16 +60,16 @@ class _SlideItemState extends State<SlideItem> {
                       ),
 
 
-                      //child: //Image.file(
-                      //File(
-                      //   'Users/macbookpro/Desktop/ProjetFlutter/API/${widget.img}'),
-                      // fit: BoxFit.cover,
-                      //),
-                      child: Image.asset('assets/backgroundProfile.jpg',
-                        fit: BoxFit.cover,
-
-
+                      child: Image.file(
+                      File(
+                         'Users/macbookpro/Desktop/ProjetFlutter/API/${widget.img}'),
+                       fit: BoxFit.cover,
                       ),
+                      //child: Image.asset('assets/backgroundProfile.jpg',
+                        //fit: BoxFit.cover,
+
+
+                     // ),
 
 
                     ),
@@ -160,14 +160,8 @@ class _SlideItemState extends State<SlideItem> {
                         ),
                       ),
                     ),
-                    FlatButton(
-                      child: Text(
-                        "Learn more",
-                        style: TextStyle(
-                          color: Theme.of(context).accentColor,
-                        ),
-                      ),
-                      onPressed: () {
+                    GestureDetector(
+                      onTap: (){
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -177,7 +171,14 @@ class _SlideItemState extends State<SlideItem> {
                           ),
                         );
                       },
+                      child: Text(
+                        "Learn more",
+                        style: TextStyle(
+                          color: Theme.of(context).accentColor,
+                        ),
+                      ),
                     ),
+
 
 
                   ],

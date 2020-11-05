@@ -69,8 +69,8 @@ class MapScreenState extends State<ProfilePage>
     String base64Image = base64Encode(_image.readAsBytesSync());
     String fileName = _image.path.split("/").last;
 
-    http.put("http://10.0.2.2:1337/user/edit/image/$idConnectedUser", body: {
-   // http.put("http://localhost:1337/user/edit/image/$idConnectedUser", body: {
+   // http.put("http://10.0.2.2:1337/user/edit/image/$idConnectedUser", body: {
+    http.put("http://localhost:1337/user/edit/image/$idConnectedUser", body: {
       "image": base64Image,
       "name": fileName,
     }).then((res) {
@@ -87,7 +87,7 @@ class MapScreenState extends State<ProfilePage>
     idConnectedUser = preferences.getInt("id");
     print("connected user id:" + idConnectedUser.toString());
     final response =
-        //await http.get("http://10.0.2.2:1337/user/show/$idConnectedUser");
+       // await http.get("http://10.0.2.2:1337/user/show/$idConnectedUser");
         await http.get("http://localhost:1337/user/show/$idConnectedUser");
 
     final data = jsonDecode(response.body);
@@ -119,8 +119,8 @@ class MapScreenState extends State<ProfilePage>
     SharedPreferences preferences = await SharedPreferences.getInstance();
     idConnectedUser = preferences.getInt("id");
     final response = await http
-        .put("http://10.0.2.2:1337/user/edit/$idConnectedUser", body: {
-        //.put("http://localhost:1337/user/edit/$idConnectedUser", body: {
+        //.put("http://10.0.2.2:1337/user/edit/$idConnectedUser", body: {
+        .put("http://localhost:1337/user/edit/$idConnectedUser", body: {
       "prenom": name,
       "name": surname,
       "email": email,

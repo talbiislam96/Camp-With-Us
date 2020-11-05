@@ -36,8 +36,8 @@ int idConnectedUser;
     SharedPreferences preferences = await SharedPreferences.getInstance();
     idConnectedUser = preferences.getInt("id");
     var response = await http.get(
-        //Uri.encodeFull("http://localhost:1337/follow/show/$idConnectedUser"),
-        Uri.encodeFull("http://10.0.2.2:1337/follow/show/$idConnectedUser"),
+        Uri.encodeFull("http://localhost:1337/follow/show/$idConnectedUser"),
+        //Uri.encodeFull("http://10.0.2.2:1337/follow/show/$idConnectedUser"),
         headers: {"Accept": "application/json"});
     var followings = List<Following>();
 
@@ -53,8 +53,8 @@ int idConnectedUser;
 
   Future<List<Event>> fetchEvents() async {
     var response = await http.get(
-        //Uri.encodeFull("http://localhost:1337/evenement/show"),
-        Uri.encodeFull("http://10.0.2.2:1337/evenement/show"),
+        Uri.encodeFull("http://localhost:1337/evenement/show"),
+       // Uri.encodeFull("http://10.0.2.2:1337/evenement/show"),
         headers: {"Accept": "application/json"});
     var events = List<Event>();
 
