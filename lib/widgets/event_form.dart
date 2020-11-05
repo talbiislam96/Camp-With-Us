@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:camp_with_us/screens/events.dart';
+import 'package:camp_with_us/screens/trending.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -62,13 +64,14 @@ class EditEventFormState extends State<EditEventForm> {
     super.initState();
   }
 
+
   _imgFromGallery() async {
     File image = await ImagePicker.pickImage(
         source: ImageSource.gallery, imageQuality: 50);
 
     setState(() {
       _image = image;
-      // _upload();
+      print(_image);
     });
   }
 
@@ -121,6 +124,10 @@ class EditEventFormState extends State<EditEventForm> {
 
     if (data == "Evenement ajouté avec succés") {
       successToast("Event added successfully !");
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => Events()),
+      );
     } else {
       errorToast("Error Adding Event");
     }
@@ -249,6 +256,7 @@ class EditEventFormState extends State<EditEventForm> {
                     ? "Invalid Price. Should be number."
                     : null,
               ),
+
               new Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [

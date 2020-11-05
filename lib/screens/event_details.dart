@@ -6,17 +6,22 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../Entity/event.dart';
 
-class EventDetailsPage extends StatelessWidget {
-  EventDetailsPage(this.event);
-  final Event event;
+class EventDetailsPage extends StatefulWidget {
+  EventDetailsPage(this.id);
+  final int id;
 
+  @override
+  _EventDetailsPageState createState() => _EventDetailsPageState();
+}
+
+class _EventDetailsPageState extends State<EventDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
-            MovieDetailHeader(event),
+            EventDetailHeader(),
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: Storyline(),

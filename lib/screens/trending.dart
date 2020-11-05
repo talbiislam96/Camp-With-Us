@@ -14,8 +14,12 @@ class Trending extends StatefulWidget {
 
 class _TrendingState extends State<Trending> {
   List<Event> _events = List<Event>();
+  final List<Event> events;
+
+  _TrendingState({Key key, @required this.events}) ;
 
   String imageEvent;
+  //final Event event = ModalRoute.of(context).settings.arguments;
 
   Future<List<Event>> fetchEvents() async {
     var response = await http.get(
@@ -64,15 +68,15 @@ class _TrendingState extends State<Trending> {
               physics: NeverScrollableScrollPhysics(),
               itemCount: _events == null ? 0 : _events.length,
               itemBuilder: (BuildContext context, int index) {
-                //Map restaurant = restaurants[index];
-
                 return TrendingItem(
+                  id: _events[index].id,
                   img: _events[index].photo,
                   title: _events[index].name,
                   address: _events[index].place,
                   //rating: _events["rating"],
                   date: _events[index].dStart,
                 );
+
               },
             ),
             SizedBox(height: 10.0),

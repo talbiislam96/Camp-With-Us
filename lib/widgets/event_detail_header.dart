@@ -5,23 +5,49 @@ import 'package:camp_with_us/widgets/rating_imformation.dart';
 import 'package:flutter/material.dart';
 import '../Entity/event.dart';
 import 'banner_image.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'dart:io';
 
-class MovieDetailHeader extends StatelessWidget {
-  MovieDetailHeader(this.event);
-  final Event event;
-  //MovieDetailHeader();
-  //List<Widget> _buildCategoryChips(TextTheme textTheme) {
-  //return mo.categories.map((category) {
-  //return Padding(
-  //padding: const EdgeInsets.only(right: 8.0),
-  //child: Chip(
-  // label: Text(category),
-  //labelStyle: textTheme.caption,
-  // backgroundColor: Colors.black12,
-  // ),
-  //);
-  // }).toList();
-  //}
+class EventDetailHeader extends StatefulWidget {
+  @override
+  _EventDetailHeaderState createState() => _EventDetailHeaderState();
+}
+
+class _EventDetailHeaderState extends State<EventDetailHeader> {
+  int eventId;
+  String nameEvent, locationEvent, categoryEvent, phoneEvent, imageEvent;
+
+  getPref() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    int eventId = preferences.getInt("idEvent");
+  }
+
+  getEventInfo() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    eventId = preferences.getInt("idEvent");
+    final response =
+        // await http.get("http://10.0.2.2:1337/user/show/$idConnectedUser");
+        await http.get("http://localhost:1337/event/show/$eventId");
+    final data = jsonDecode(response.body);
+    setState(() {
+      nameEvent = data['nom_evenement'];
+      locationEvent = data['lieux_evenement'];
+      categoryEvent = data['type_evenement'];
+      phoneEvent = data['infoline'];
+    });
+
+    print(nameEvent);
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getPref();
+getEventInfo();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,11 +57,11 @@ class MovieDetailHeader extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Event name',
+          nameEvent.toString(),
           style: textTheme.title,
         ),
         SizedBox(height: 8.0),
-        RatingInformation(event),
+        // RatingInformation(event),
         SizedBox(height: 12.0),
         Row(
           children: <Widget>[
@@ -43,7 +69,7 @@ class MovieDetailHeader extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(right: 8.0),
                 child: Chip(
-                  label: Text('location'),
+                  label: Text(locationEvent.toString()),
                   labelStyle: textTheme.caption,
                   backgroundColor: Colors.black12,
                 ),
@@ -53,7 +79,7 @@ class MovieDetailHeader extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(right: 8.0),
                 child: Chip(
-                  label: Text('distance'),
+                  label: Text(categoryEvent.toString()),
                   labelStyle: textTheme.caption,
                   backgroundColor: Colors.black12,
                 ),
@@ -63,14 +89,12 @@ class MovieDetailHeader extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(right: 8.0),
                 child: Chip(
-                  label: Text('phone number'),
+                  label: Text(phoneEvent.toString()),
                   labelStyle: textTheme.caption,
                   backgroundColor: Colors.black12,
                 ),
               ),
-
             ),
-
           ],
         ),
       ],

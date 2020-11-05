@@ -91,7 +91,6 @@ int idConnectedUser;
     String localeDateFormatter = getLocaleDateFormatter(myLocale);
     initializeDateFormatting(localeDateFormatter);
 
-
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.fromLTRB(10.0, 0, 10.0, 0),
@@ -214,6 +213,7 @@ buildEventsList(BuildContext context,List<Event> events) {
         return Padding(
           padding: const EdgeInsets.only(right: 10.0),
           child: SlideItem(
+            id: events[index].id,
             img: events[index].photo,
             title: events[index].name,
             address: events[index].place,
@@ -257,6 +257,7 @@ buildFriendsList(BuildContext context,List<Following> followings) {
           ),
         );
       },
+
     ),
   );
 }

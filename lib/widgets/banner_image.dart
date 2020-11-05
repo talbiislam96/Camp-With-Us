@@ -1,22 +1,75 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'dart:io';
 
-class ArcBannerImage extends StatelessWidget {
+class ArcBannerImage extends StatefulWidget {
   //ArcBannerImage(this.imageUrl);
   //final String imageUrl;
 ArcBannerImage();
+
+  @override
+  _ArcBannerImageState createState() => _ArcBannerImageState();
+}
+
+class _ArcBannerImageState extends State<ArcBannerImage> {
+
+  int eventId;
+  String imageEvent;
+  File _image;
+
+  getPref() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    int eventId = preferences.getInt("idEvent");
+    print(eventId);
+  }
+
+  getEventInfo() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    eventId = preferences.getInt("idEvent");
+    print("event clicked id:" + eventId.toString());
+    final response =
+    // await http.get("http://10.0.2.2:1337/user/show/$idConnectedUser");
+    await http.get("http://localhost:1337/event/show/$eventId");
+    final data = jsonDecode(response.body);
+
+    imageEvent = data['photo_evenement'];
+    setState(() {
+     if (imageEvent == null) {
+        _image = File(
+            "Users/macbookpro/Desktop/ProjetFlutter/Camp-With-Us/assets/bg2.jpeg");
+      } else {
+        _image = File("Users/macbookpro/Desktop/ProjetFlutter/API/$imageEvent");
+        //_image = File("C:/Users/islam/Desktop/camp_with_us/$imageProfile");
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setState(() {
+      getPref();
+      getEventInfo();
+    });
+
+  }
   @override
   Widget build(BuildContext context) {
     var screenWidth = MediaQuery.of(context).size.width;
 
     return ClipPath(
       clipper: ArcClipper(),
-      child: Image.network(
-        //imageUrl,
-        'https://www.tripsavvy.com/thmb/CyXuQJWabjrBCRBCVmP4TbBAOmA=/950x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/sunrise-camping--676019412-5b873a5a46e0fb0050f2b7e0.jpg',
+      child: Image.file(
+        _image ?? File(
+            "Users/macbookpro/Desktop/ProjetFlutter/Camp-With-Us/assets/bg2.jpeg"),
         width: screenWidth,
         height: 230.0,
-        fit: BoxFit.cover,
-      ),
+        fit: BoxFit.fill,
+      ) ,
+
     );
   }
 }

@@ -3,6 +3,7 @@ import 'package:camp_with_us/util/const.dart';
 import 'dart:io';
 
 class TrendingItem extends StatefulWidget {
+  final int id;
   final String img;
   final String title;
   final String address;
@@ -11,6 +12,7 @@ class TrendingItem extends StatefulWidget {
 
   TrendingItem({
     Key key,
+    @required this.id,
     @required this.img,
     @required this.title,
     @required this.address,
@@ -50,16 +52,16 @@ class _TrendingItemState extends State<TrendingItem> {
                         topLeft: Radius.circular(10),
                         topRight: Radius.circular(10),
                       ),
-                      //child: //Image.file(
-                        //File(
-                         //   'Users/macbookpro/Desktop/ProjetFlutter/API/${widget.img}'),
-                       // fit: BoxFit.cover,
-                      //),
-                      child: Image.asset('assets/backgroundProfile.jpg',
+                      child: Image.file(
+                        File(
+                            'Users/macbookpro/Desktop/ProjetFlutter/API/${widget.img}'),
                         fit: BoxFit.cover,
-
-
                       ),
+                      //child: Image.asset('assets/backgroundProfile.jpg',
+                       // fit: BoxFit.cover,
+
+
+                     // ),
 
 
                     ),

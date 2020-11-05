@@ -5,8 +5,14 @@ import 'package:camp_with_us/screens/event_details.dart';
 import 'package:flutter/material.dart';
 import 'package:camp_with_us/util/const.dart';
 import 'package:camp_with_us/screens/events.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
+
 
 class SlideItem extends StatefulWidget {
+  final int id;
   final String img;
   final String title;
   final String address;
@@ -17,6 +23,7 @@ class SlideItem extends StatefulWidget {
 
   SlideItem({
     Key key,
+    @required this.id,
     @required this.img,
     @required this.title,
     @required this.address,
@@ -32,7 +39,14 @@ class SlideItem extends StatefulWidget {
 }
 
 class _SlideItemState extends State<SlideItem> {
-  Event get event => null;
+  savePref(int id) async {
+    print("event clicked");
+    print(id);
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+      preferences.setInt("idEvent", id);
+      preferences.commit();
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -162,11 +176,12 @@ class _SlideItemState extends State<SlideItem> {
                     ),
                     GestureDetector(
                       onTap: (){
+                        savePref(widget.id);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (BuildContext context) {
-                              return EventDetailsPage(event);
+                              return EventDetailsPage(widget.id);
                             },
                           ),
                         );

@@ -1,11 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'dart:io';
 
-class Storyline extends StatelessWidget {
-  //Storyline(this.description);
-  //final String description;
+
+class Storyline extends StatefulWidget {
   Storyline();
 
+  @override
+  _StorylineState createState() => _StorylineState();
+}
 
+class _StorylineState extends State<Storyline> {
+
+  int eventId;
+  String descriptionEvent;
+
+  getPref() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    int eventId = preferences.getInt("idEvent");
+  }
+
+  getEventInfo() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    eventId = preferences.getInt("idEvent");
+    final response =
+    // await http.get("http://10.0.2.2:1337/event/show/$idConnectedUser");
+    await http.get("http://localhost:1337/event/show/$eventId");
+    final data = jsonDecode(response.body);
+    setState(() {
+      descriptionEvent = data['description_evenement'];
+
+    });
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+      getPref();
+      getEventInfo();
+
+  }
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -20,7 +56,7 @@ class Storyline extends StatelessWidget {
         ),
         SizedBox(height: 8.0),
         Text(
-         "this is a description of an event that hasn't been made yet , this is illusion this is unreal, believe me this is nothing add some life to this.I am sleepy but i need to keep working , writing nonsense just to test the see more button f my life am tired need a break , i need food , probably a cigarette too , this is weird i know but that's all am about tbh ... ",
+          descriptionEvent ?? "No description available",
           style: textTheme.body1.copyWith(
             color: Colors.black45,
             fontSize: 16.0,
@@ -28,22 +64,7 @@ class Storyline extends StatelessWidget {
         ),
         // No expand-collapse in this tutorial, we just slap the "more"
         // button below the text like in the mockup.
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Text(
-              'more',
-              style: textTheme.body1
-                  .copyWith(fontSize: 16.0, color: theme.accentColor),
-            ),
-            Icon(
-              Icons.keyboard_arrow_down,
-              size: 18.0,
-              color: theme.accentColor,
-            ),
-          ],
-        ),
+
       ],
     );
   }
