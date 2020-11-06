@@ -1,17 +1,14 @@
 import 'package:camp_with_us/WeatherAPI/screensWeather/loading_screen.dart';
 import 'package:camp_with_us/WeatherAPI/screensWeather/location_screen.dart';
 import 'package:camp_with_us/screens/add_event.dart';
+import 'package:camp_with_us/screens/event_details.dart';
+import 'package:camp_with_us/screens/myevents.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:camp_with_us/screens/profile.dart';
 import 'package:camp_with_us/screens/events.dart';
 import 'package:camp_with_us/screens/login.dart';
-import 'package:flutter/material.dart';
-import 'package:camp_with_us/screens/home.dart';
 
-import 'article.dart';
 
 
 
@@ -25,11 +22,11 @@ class MainMenu extends StatefulWidget {
 class _MainMenuState extends State<MainMenu> {
   PageController _pageController;
   int _page = 0;
-
   List icons = [
     Icons.home,
     Icons.add,
     Icons.person,
+    Icons.event,
     Icons.wb_cloudy
    // Icons.ac_unit,
   ];
@@ -37,6 +34,7 @@ class _MainMenuState extends State<MainMenu> {
     Events(),
     AddEventPage(),
     ProfilePage(),
+    Myevents(),
     LoadingScreen()
   ];
 
@@ -70,7 +68,7 @@ class _MainMenuState extends State<MainMenu> {
             buildTabIcon(1),
             buildTabIcon(2),
             buildTabIcon(3),
-
+            buildTabIcon(4),
             SizedBox(width: 5),
           ],
         ),
@@ -79,21 +77,7 @@ class _MainMenuState extends State<MainMenu> {
       ),
       floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        elevation: 10.0,
-        child: Icon(
-          Icons.add,
-        ),
-        onPressed: () => _pageController.jumpToPage(1),
-       /* onPressed: (){
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AddEventPage()),
-          );
 
-
-        },*/
-      ),
     );
   }
 
@@ -149,7 +133,7 @@ class _MainMenuState extends State<MainMenu> {
   }
 
   buildTabIcon(int index) {
-    if (index == 1) {
+    if (index == 2) {
       return IconButton(
         icon: Icon(
           icons[index],

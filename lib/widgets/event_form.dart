@@ -48,31 +48,8 @@ class EditEventFormState extends State<EditEventForm> {
   final TextEditingController _placeController = new TextEditingController();
   final TextEditingController _typeController = new TextEditingController();
   int idConnectedUser;
-
   File _image;
   int nombre = 20;
-
-  /*Widget buildPicker(BuildContext context) {
-    List<String> categories = <String>[
-      'Family Camping',
-      'Sport Camping',
-      'Night Camping',
-      'Music Camping',
-    ];
-    var selectedCategory = "Night Camping";
-    showMaterialScrollPicker(
-      context: context,
-      title: "Pick Your City",
-      items: categories,
-      selectedItem: selectedCategory,
-      onChanged: (value){
-
-        selectedCategory = value;
-      },
-    );
-  }*/
-
-
   @override
   void initState() {
 

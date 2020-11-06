@@ -1,19 +1,9 @@
-import 'package:camp_with_us/Entity/following.dart';
-import 'package:camp_with_us/WeatherAPI/screensWeather/location_screen.dart';
-import 'package:camp_with_us/WeatherAPI/servicesWeather/weather.dart';
-import 'package:camp_with_us/article.dart';
 import 'package:camp_with_us/screens/event_creator_profile.dart';
-import 'package:camp_with_us/widgets/rating_imformation.dart';
 import 'package:flutter/material.dart';
-import '../Entity/event.dart';
 import 'banner_image.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'dart:io';
-import 'package:camp_with_us/WeatherAPI/screensWeather/city_screen.dart';
-import 'package:camp_with_us/WeatherAPI/servicesWeather/location.dart';
-import 'package:camp_with_us/WeatherAPI/servicesWeather/networking.dart';
 import 'dart:core';
 
 

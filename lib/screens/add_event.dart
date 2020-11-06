@@ -1,10 +1,7 @@
 import 'package:camp_with_us/widgets/event_form.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
 
-import 'package:flutter/material.dart';
-import 'dart:math';
 
 class AddEventPage extends StatefulWidget {
   @override

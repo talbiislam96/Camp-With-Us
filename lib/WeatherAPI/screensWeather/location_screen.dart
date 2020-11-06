@@ -82,7 +82,7 @@ class _LocationScreenState extends State<LocationScreen> {
                 alignment: Alignment.topLeft,
                 child: FlatButton(
                   onPressed: () {
-                    Navigator.pushReplacement(
+                    Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => MainMenu(signOut)),
                     );                  },
