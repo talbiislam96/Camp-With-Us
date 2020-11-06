@@ -15,7 +15,7 @@ class Storyline extends StatefulWidget {
 class _StorylineState extends State<Storyline> {
 
   int eventId;
-  String descriptionEvent;
+  String descriptionEvent, dStartEvent, dEndEvent, phoneEvent, categoryEvent;
 
   getPref() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -31,6 +31,12 @@ class _StorylineState extends State<Storyline> {
     final data = jsonDecode(response.body);
     setState(() {
       descriptionEvent = data['description_evenement'];
+      dStartEvent = data['date_debut_evenement'];
+      dEndEvent = data['date_fin_evenement'];
+      phoneEvent = data['infoline'];
+      categoryEvent = data['type_evenement'];
+
+
 
     });
   }
@@ -51,6 +57,35 @@ class _StorylineState extends State<Storyline> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
+          'Category: $categoryEvent',
+          style: textTheme.subhead.copyWith(fontSize: 18.0),
+        ),
+        SizedBox(height: 8.0),
+        Text(
+          'Starting Date: $dStartEvent',
+          style: textTheme.subhead.copyWith(fontSize: 18.0),
+        ),
+        SizedBox(height: 8.0),
+        Text(
+          'Ending Date: $dEndEvent',
+          style: textTheme.subhead.copyWith(fontSize: 18.0),
+        ),
+        SizedBox(height: 8.0),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Icon(
+              Icons.phone,
+              color: Colors.red,
+            ),
+            Text(
+                phoneEvent.toString()
+            ),
+          ],
+        ),
+        SizedBox(height: 8.0),
+
+        Text(
           'Description',
           style: textTheme.subhead.copyWith(fontSize: 18.0),
         ),
@@ -62,9 +97,6 @@ class _StorylineState extends State<Storyline> {
             fontSize: 16.0,
           ),
         ),
-        // No expand-collapse in this tutorial, we just slap the "more"
-        // button below the text like in the mockup.
-
       ],
     );
   }

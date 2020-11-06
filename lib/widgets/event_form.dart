@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:io';
 import 'package:camp_with_us/screens/events.dart';
 import 'package:camp_with_us/screens/trending.dart';
+import 'package:camp_with_us/util/categories.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
 import 'reusable_card.dart';
 import 'calender_picker.dart';
@@ -12,6 +12,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_material_pickers/flutter_material_pickers.dart';
+
+
+
 
 class EditEventForm extends StatefulWidget {
   @override
@@ -20,6 +24,7 @@ class EditEventForm extends StatefulWidget {
   final void Function(Map<String, dynamic>) _submitFormCallback;
   final Map _startingData;
   EditEventForm(this._submitFormCallback, this._startingData);
+
 }
 
 const kNumberTextStyle = TextStyle(
@@ -47,8 +52,30 @@ class EditEventFormState extends State<EditEventForm> {
   File _image;
   int nombre = 20;
 
+  /*Widget buildPicker(BuildContext context) {
+    List<String> categories = <String>[
+      'Family Camping',
+      'Sport Camping',
+      'Night Camping',
+      'Music Camping',
+    ];
+    var selectedCategory = "Night Camping";
+    showMaterialScrollPicker(
+      context: context,
+      title: "Pick Your City",
+      items: categories,
+      selectedItem: selectedCategory,
+      onChanged: (value){
+
+        selectedCategory = value;
+      },
+    );
+  }*/
+
+
   @override
   void initState() {
+
     if (!(widget._startingData == null)) {
       _startTimeController.text = DateFormat(CalendarPickerState.timeFormat)
           .format(widget._startingData["start-time"]);
@@ -123,15 +150,16 @@ class EditEventFormState extends State<EditEventForm> {
     print(data);
 
     if (data == "Evenement ajouté avec succés") {
-      successToast("Event added successfully !");
+      successToast("Camping added successfully !");
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => Events()),
       );
     } else {
-      errorToast("Error Adding Event");
+      errorToast("Error Adding Camping");
     }
   }
+
 
   successToast(String toast) {
     return Fluttertoast.showToast(
@@ -177,22 +205,22 @@ class EditEventFormState extends State<EditEventForm> {
   Widget build(BuildContext context) {
     return new SingleChildScrollView(
       child: new Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(10.0),
         child: new Form(
           //autovalidate: true,
           key: _formKey,
           child: new Column(
             children: <Widget>[
               new Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
+                padding: const EdgeInsets.only(bottom: 10.0),
                 child: new TextFormField(
                   controller: _titleController,
                   decoration: new InputDecoration(
-                    labelText: "Event Name",
+                    labelText: "Camping Name",
                     border: new OutlineInputBorder(),
                   ),
                   validator: (val) =>
-                      val.isEmpty ? "Event name should not be empty" : null,
+                      val.isEmpty ? "Camping name should not be empty" : null,
                   //onSaved: (val) => _eventName = val,
                 ),
               ),
@@ -203,7 +231,7 @@ class EditEventFormState extends State<EditEventForm> {
                   border: new OutlineInputBorder(),
                 ),
                 validator: (val) => val.isEmpty
-                    ? "Event description should not be empty"
+                    ? "Camping description should not be empty"
                     : null,
                 maxLines: 6,
                 //onSaved: (val) => _description = val,
@@ -211,7 +239,7 @@ class EditEventFormState extends State<EditEventForm> {
               new CalendarPicker(_startTimeController),
               new CalendarPicker(_endTimeController),
               new Padding(
-                padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+                padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
                 child: new TextFormField(
                   controller: _priceController,
                   decoration: new InputDecoration(
@@ -228,22 +256,26 @@ class EditEventFormState extends State<EditEventForm> {
               new TextFormField(
                 controller: _placeController,
                 decoration: new InputDecoration(
-                  labelText: "Place Event",
+                  labelText: "Place Camping",
                   //icon: new Icon(Icons.map),
                   border: new OutlineInputBorder(),
                 ),
                 validator: (val) =>
-                    val.isEmpty ? "Event place should not be empty" : null,
+                    val.isEmpty ? "Camping place should not be empty" : null,
               ),
-              new TextFormField(
-                controller: _typeController,
-                decoration: new InputDecoration(
-                  labelText: "Category Event",
-                  //icon: new Icon(Icons.map),
-                  border: new OutlineInputBorder(),
+              Padding(
+                padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+
+                child: new TextFormField(
+                  controller: _typeController,
+                  decoration: new InputDecoration(
+                    labelText: "Category Camping",
+                    //icon: new Icon(Icons.map),
+                    border: new OutlineInputBorder(),
+                  ),
+                  validator: (val) =>
+                      val.isEmpty ? "Camping Category should not be empty" : null,
                 ),
-                validator: (val) =>
-                    val.isEmpty ? "Event Type should not be empty" : null,
               ),
               new TextFormField(
                 controller: _infolineController,
@@ -252,9 +284,8 @@ class EditEventFormState extends State<EditEventForm> {
                   //icon: new Icon(Icons.map),
                   border: new OutlineInputBorder(),
                 ),
-                validator: (val) => double.parse(val, (e) => null) == null
-                    ? "Invalid Price. Should be number."
-                    : null,
+                validator: (val) =>
+                val.isEmpty ? "Infoline should not be empty" : null,
               ),
 
               new Row(
@@ -311,15 +342,16 @@ class EditEventFormState extends State<EditEventForm> {
                           onPressed: () {
                             _showPicker(context);
                           }),
-                      new Text("Upload Event Photo")
+                      new Text("Upload Camping Photo")
                     ],
                   ),
                 ],
               ),
-              Padding(
-                padding: EdgeInsets.all(50),
+              ButtonTheme(
+                minWidth: 400.0,
+                height: 50.0,
                 child: new RaisedButton(
-                  child: new Text("Add Event"),
+                  child: new Text("Add Camping"),
                   textColor: Colors.white,
                   color: Colors.green,
                   onPressed: () => submitForm(),
@@ -353,4 +385,9 @@ class RoundIconButton extends StatelessWidget {
       onPressed: onPress,
     );
   }
+  // ignore: missing_return
+
 }
+
+
+

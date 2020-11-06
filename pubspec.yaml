@@ -45,6 +45,8 @@ dependencies:
   flutter_google_places: ^0.2.6
   geocoder: ^0.2.1
   font_awesome_flutter: ^8.4.0
+  flutter_picker: ^1.1.5
+  flutter_material_pickers: ^1.8.0
 
 
 
@@ -61,6 +63,7 @@ flutter:
 
   assets:
     - assets/
+    - images/
 
 
 

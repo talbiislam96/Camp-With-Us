@@ -1,7 +1,9 @@
-import 'city_screen.dart';
+import 'package:camp_with_us/WeatherAPI/screensWeather//city_screen.dart';
+import 'package:camp_with_us/main_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:camp_with_us/WeatherAPI/utilities/constants.dart';
-import 'package:camp_with_us/WeatherAPI/servicesWeather/weather.dart';
+import 'package:camp_with_us/WeatherAPI/servicesWeather//weather.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LocationScreen extends StatefulWidget {
   LocationScreen({this.locationWeather});
@@ -10,9 +12,12 @@ class LocationScreen extends StatefulWidget {
   @override
   _LocationScreenState createState() => _LocationScreenState();
 }
+enum LoginStatus { notSignIn, signIn }
+
 
 class _LocationScreenState extends State<LocationScreen> {
   WeatherModel weather = WeatherModel();
+  LoginStatus _loginStatus = LoginStatus.notSignIn;
 
   int temperature;
   int condition;
@@ -44,7 +49,18 @@ class _LocationScreenState extends State<LocationScreen> {
       }
     });
   }
-
+  signOut() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      preferences.setString("prenom", null);
+      preferences.setString("name", null);
+      preferences.setString("email", null);
+      preferences.setString("id", null);
+      print("empty sharedPref");
+      preferences.commit();
+      _loginStatus = LoginStatus.notSignIn;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,9 +76,22 @@ class _LocationScreenState extends State<LocationScreen> {
         constraints: BoxConstraints.expand(),
         child: SafeArea(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+
             children: <Widget>[
+              Align(
+                alignment: Alignment.topLeft,
+                child: FlatButton(
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => MainMenu(signOut)),
+                    );                  },
+                  child: Icon(
+                    Icons.arrow_back_ios,
+                    size: 50.0,
+                  ),
+                ),
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -89,6 +118,7 @@ class _LocationScreenState extends State<LocationScreen> {
                       print(typedName);
                       if (typedName != null){
                         var weatherData = await weather.getCityWeather(typedName);
+
                         updateUI(weatherData);
                       }
                     },

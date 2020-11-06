@@ -7,14 +7,13 @@ import 'dart:io';
 class ArcBannerImage extends StatefulWidget {
   //ArcBannerImage(this.imageUrl);
   //final String imageUrl;
-ArcBannerImage();
+  ArcBannerImage();
 
   @override
   _ArcBannerImageState createState() => _ArcBannerImageState();
 }
 
 class _ArcBannerImageState extends State<ArcBannerImage> {
-
   int eventId;
   String imageEvent;
   File _image;
@@ -30,13 +29,13 @@ class _ArcBannerImageState extends State<ArcBannerImage> {
     eventId = preferences.getInt("idEvent");
     print("event clicked id:" + eventId.toString());
     final response =
-    // await http.get("http://10.0.2.2:1337/user/show/$idConnectedUser");
-    await http.get("http://localhost:1337/event/show/$eventId");
+        // await http.get("http://10.0.2.2:1337/user/show/$idConnectedUser");
+        await http.get("http://localhost:1337/event/show/$eventId");
     final data = jsonDecode(response.body);
 
     imageEvent = data['photo_evenement'];
     setState(() {
-     if (imageEvent == null) {
+      if (imageEvent == null) {
         _image = File(
             "Users/macbookpro/Desktop/ProjetFlutter/Camp-With-Us/assets/bg2.jpeg");
       } else {
@@ -54,22 +53,26 @@ class _ArcBannerImageState extends State<ArcBannerImage> {
       getPref();
       getEventInfo();
     });
-
   }
+
   @override
   Widget build(BuildContext context) {
     var screenWidth = MediaQuery.of(context).size.width;
 
     return ClipPath(
       clipper: ArcClipper(),
-      child: Image.file(
-        _image ?? File(
-            "Users/macbookpro/Desktop/ProjetFlutter/Camp-With-Us/assets/bg2.jpeg"),
-        width: screenWidth,
-        height: 230.0,
-        fit: BoxFit.fill,
-      ) ,
-
+      child: Column(
+        children: [
+          Image.file(
+            _image ??
+                File(
+                    "Users/macbookpro/Desktop/ProjetFlutter/Camp-With-Us/assets/logo.png"),
+            width: screenWidth,
+            height: 230.0,
+            fit: BoxFit.fill,
+          ),
+        ],
+      ),
     );
   }
 }

@@ -1,7 +1,7 @@
-import 'location_screen.dart';
+import 'package:camp_with_us/WeatherAPI/screensWeather//location_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:camp_with_us/WeatherAPI/servicesWeather/weather.dart';
+import 'package:camp_with_us/WeatherAPI/servicesWeather//weather.dart';
 
 
 class LoadingScreen extends StatefulWidget {

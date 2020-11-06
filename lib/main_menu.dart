@@ -1,3 +1,5 @@
+import 'package:camp_with_us/WeatherAPI/screensWeather/loading_screen.dart';
+import 'package:camp_with_us/WeatherAPI/screensWeather/location_screen.dart';
 import 'package:camp_with_us/screens/add_event.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -28,12 +30,14 @@ class _MainMenuState extends State<MainMenu> {
     Icons.home,
     Icons.add,
     Icons.person,
+    Icons.wb_cloudy
    // Icons.ac_unit,
   ];
   List<Widget> _widgetOptions = <Widget>[
     Events(),
     AddEventPage(),
     ProfilePage(),
+    LoadingScreen()
   ];
 
   @override
@@ -65,6 +69,8 @@ class _MainMenuState extends State<MainMenu> {
             buildTabIcon(0),
             buildTabIcon(1),
             buildTabIcon(2),
+            buildTabIcon(3),
+
             SizedBox(width: 5),
           ],
         ),
