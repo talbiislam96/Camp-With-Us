@@ -20,10 +20,9 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
         child: Column(
           children: [
             EventDetailHeader(),
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Storyline(),
-            ),
+
+              Storyline(),
+
 
             SizedBox(height: 20.0),
             ActorScroller(),

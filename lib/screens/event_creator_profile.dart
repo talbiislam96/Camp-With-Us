@@ -13,6 +13,18 @@ class _CreatorProfileState extends State<CreatorProfile> {
         children: <Widget>[
           new Column(
             children: <Widget>[
+              Align(
+                alignment: Alignment.topLeft,
+                child: FlatButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Icon(
+                    Icons.arrow_back_ios,
+                    size: 50.0,
+                  ),
+                ),
+              ),
               Container(
                 child: Stack(
                   alignment: Alignment.bottomCenter,

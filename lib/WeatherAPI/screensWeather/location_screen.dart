@@ -39,7 +39,7 @@ class _LocationScreenState extends State<LocationScreen> {
         cityName = '';
         return;
       } else {
-        double temp = weatherData['main']['temp'];
+        var temp = weatherData['main']['temp'];
         temperature = temp.toInt();
         var condition = weatherData['weather'][0]['id'];
         cityName = weatherData['name'];
@@ -82,7 +82,7 @@ class _LocationScreenState extends State<LocationScreen> {
                 alignment: Alignment.topLeft,
                 child: FlatButton(
                   onPressed: () {
-                    Navigator.push(
+                    Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(builder: (context) => MainMenu(signOut)),
                     );                  },

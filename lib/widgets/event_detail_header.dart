@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:camp_with_us/screens/event_creator_profile.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'banner_image.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -6,18 +9,26 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'dart:core';
 
-
 class EventDetailHeader extends StatefulWidget {
-
   @override
   _EventDetailHeaderState createState() => _EventDetailHeaderState();
 }
 
 class _EventDetailHeaderState extends State<EventDetailHeader> {
-
   int eventId;
-  String nameEvent, categoryEvent, phoneEvent, imageEvent, locationEvent;
-
+  String nameEvent,
+      categoryEvent,
+      phoneEvent,
+      imageEvent,
+      locationEvent,
+      nomUser,
+      prenomUser,
+      imageUser,
+      imageUserProfile;
+  File _image;
+String buttonText = "Participate";
+Icon buttonIcon ;
+Color buttonColor;
 
   getPref() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -36,7 +47,23 @@ class _EventDetailHeaderState extends State<EventDetailHeader> {
       locationEvent = data['lieux_evenement'];
       categoryEvent = data['type_evenement'];
       phoneEvent = data['infoline'];
+    });
+  }
 
+  getEventUserCreator() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    eventId = preferences.getInt("idEvent");
+    final response =
+        // await http.get("http://10.0.2.2:1337/profile/event/$idConnectedUser");
+        await http.get("http://localhost:1337/profile/event/$eventId");
+
+    setState(() {
+      final data = jsonDecode(response.body);
+      nomUser = data['name'];
+      prenomUser = data['prenom'];
+      imageUser = data['image_user'];
+      _image = File("Users/macbookpro/Desktop/ProjetFlutter/API/$imageUser");
+      //_image = File("C:/Users/islam/Desktop/camp_with_us/$imageProfile");
     });
   }
 
@@ -45,77 +72,16 @@ class _EventDetailHeaderState extends State<EventDetailHeader> {
     super.initState();
     getPref();
     getEventInfo();
+    getEventUserCreator();
   }
 
   @override
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
 
-    var movieInformation = Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Text(
-          nameEvent.toString(),
-          style: textTheme.title,
-        ),
-        SizedBox(height: 5.0),
-        // RatingInformation(event),
-        // SizedBox(height: 12.0),
-        Row(
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(right: 180.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Expanded(
-                      child: Icon(
-                        Icons.place,
-                        color: Colors.red,
-                      ),
-                    ),
-                    Text(locationEvent.toString()),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-
-
-        SizedBox(height: 5.0),
-
-        GestureDetector(
-          onTap: () {},
-          child: Text(
-            "See Place",
-            style: TextStyle(
-              color: Theme.of(context).accentColor,
-            ),
-          ),
-        ),
-
-        ButtonTheme(
-          minWidth: 50.0,
-          height: 40.0,
-          child: RaisedButton(
-            child: new Text("Add Camping"),
-            textColor: Colors.white,
-            color: Colors.green,
-            onPressed: () {},
-            shape: StadiumBorder(),
-          ),
-        ),
-      ],
-    );
-
     return Stack(
       children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 140.0),
-          child: ArcBannerImage(),
-        ),
+        ArcBannerImage(),
         Positioned(
           left: 8.0,
           top: 60.0,
@@ -123,34 +89,67 @@ class _EventDetailHeaderState extends State<EventDetailHeader> {
             onTap: () {
               Navigator.pop(context);
             },
-            child: Icon(Icons.arrow_back, color: Colors.black),
+            child: Icon(Icons.arrow_back_ios, color: Colors.white),
           ),
         ),
-        Positioned(
-          bottom: 0.0,
-          left: 16.0,
-          right: 16.0,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              GestureDetector(
-                child: Column(
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SizedBox(height: 150),
+
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: GestureDetector(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CircleAvatar(
-                      //backgroundImage: AssetImage(following.image),
-                      backgroundImage: NetworkImage(
-                          'https://img.freepik.com/free-psd/young-man-placing-his-hands-hips_1187-6830.jpg?size=338&ext=jpg'),
-                      radius: 40.0,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      //child: Text(following.name),
-                      child: Text(
-                        'test',
-                        style: TextStyle(
-                          color: Theme.of(context).accentColor,
+                    Column(
+                      children: [
+                        CircleAvatar(
+                          backgroundImage: FileImage(_image ??
+                              File(
+                                  "Users/macbookpro/Desktop/ProjetFlutter/Camp-With-Us/assets/user_profile.png")),
+                          radius: 40.0,
                         ),
+                        Text(
+                          '$prenomUser $nomUser' ?? "User Not Found",
+                          style: TextStyle(
+                            color: Theme.of(context).accentColor,
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    ButtonTheme(
+                      minWidth: 50.0,
+                      height: 40.0,
+                      child: RaisedButton(
+                        child: Row(
+                          children: [
+                            buttonIcon ?? Icon(Icons.check_circle),
+                             Text(buttonText),
+                          ],
+                        ),
+                        textColor: Colors.white,
+                        color: buttonColor ?? Colors.green,
+                        onPressed: () {
+                          setState(() {
+                            if (buttonText == "Participate" ){
+                              buttonText = "Cancel";
+                              buttonIcon = Icon(Icons.cancel);
+                              buttonColor = Colors.red;
+                            }
+                            else if (buttonText == "Cancel"){
+                              buttonIcon = Icon(Icons.check_circle);
+                              buttonText = "Participate";
+                              buttonColor = Colors.green;
+
+                            }
+                          });
+
+                        },
+                        shape: StadiumBorder(),
                       ),
                     ),
                   ],
@@ -162,10 +161,10 @@ class _EventDetailHeaderState extends State<EventDetailHeader> {
                   );
                 },
               ),
-              SizedBox(width: 16.0),
-              Expanded(child: movieInformation),
-            ],
-          ),
+            ),
+
+          ],
+
         ),
       ],
     );

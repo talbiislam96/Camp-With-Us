@@ -129,16 +129,13 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
     _animation = Tween(begin: 50.0, end: 200.0).animate(_controller)
       ..addStatusListener((state) {
         if (state == AnimationStatus.completed) {
-          print("completed");
         } else if (state == AnimationStatus.dismissed) {
-          print("dismissed");
         }
       })
       ..addListener(() {
         setState(() {
 
         });
-        print("value:${_animation.value}");
       });
     _controller.forward();
   }

@@ -18,30 +18,17 @@ class _ArcBannerImageState extends State<ArcBannerImage> {
   String imageEvent;
   File _image;
 
-  getPref() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    int eventId = preferences.getInt("idEvent");
-    print(eventId);
-  }
-
   getEventInfo() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     eventId = preferences.getInt("idEvent");
-    print("event clicked id:" + eventId.toString());
     final response =
         // await http.get("http://10.0.2.2:1337/user/show/$idConnectedUser");
         await http.get("http://localhost:1337/event/show/$eventId");
-    final data = jsonDecode(response.body);
-
-    imageEvent = data['photo_evenement'];
     setState(() {
-      if (imageEvent == null) {
-        _image = File(
-            "Users/macbookpro/Desktop/ProjetFlutter/Camp-With-Us/assets/bg2.jpeg");
-      } else {
-        _image = File("Users/macbookpro/Desktop/ProjetFlutter/API/$imageEvent");
-        //_image = File("C:/Users/islam/Desktop/camp_with_us/$imageProfile");
-      }
+      final data = jsonDecode(response.body);
+      imageEvent = data['photo_evenement'];
+      _image = File("Users/macbookpro/Desktop/ProjetFlutter/API/$imageEvent");
+      //_image = File("C:/Users/islam/Desktop/camp_with_us/$imageProfile");
     });
   }
 
@@ -49,10 +36,7 @@ class _ArcBannerImageState extends State<ArcBannerImage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    setState(() {
-      getPref();
-      getEventInfo();
-    });
+    getEventInfo();
   }
 
   @override
@@ -66,7 +50,7 @@ class _ArcBannerImageState extends State<ArcBannerImage> {
           Image.file(
             _image ??
                 File(
-                    "Users/macbookpro/Desktop/ProjetFlutter/Camp-With-Us/assets/logo.png"),
+                    "Users/macbookpro/Desktop/ProjetFlutter/Camp-With-Us/assets/bg2.jpeg"),
             width: screenWidth,
             height: 230.0,
             fit: BoxFit.fill,

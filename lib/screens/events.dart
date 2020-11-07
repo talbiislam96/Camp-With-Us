@@ -24,10 +24,9 @@ class Events extends StatefulWidget {
 class _EventState extends State<Events> {
   List<Event> _events = List<Event>();
   List<Following> _followings = List<Following>();
-int idConnectedUser;
+  int idConnectedUser;
   String imageEvent;
   String imageFollowing;
-
 
   Future<List<Following>> fetchFollowings() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -49,10 +48,10 @@ int idConnectedUser;
   }
 
   Future<List<Event>> fetchEvents() async {
-    var response = await http.get(
-        Uri.encodeFull("http://localhost:1337/evenement/show"),
-       // Uri.encodeFull("http://10.0.2.2:1337/evenement/show"),
-        headers: {"Accept": "application/json"});
+    var response =
+        await http.get(Uri.encodeFull("http://localhost:1337/evenement/show"),
+            // Uri.encodeFull("http://10.0.2.2:1337/evenement/show"),
+            headers: {"Accept": "application/json"});
     var events = List<Event>();
 
     if (response.statusCode == 200) {
@@ -69,12 +68,12 @@ int idConnectedUser;
   void initState() {
     // TODO: implement initState
     super.initState();
-    fetchEvents().then((value){
+    fetchEvents().then((value) {
       setState(() {
         _events.addAll(value);
       });
     });
-    fetchFollowings().then((value){
+    fetchFollowings().then((value) {
       setState(() {
         _followings.addAll(value);
       });
@@ -83,7 +82,6 @@ int idConnectedUser;
 
   @override
   Widget build(BuildContext context) {
-
     Locale myLocale = Localizations.localeOf(context);
     String localeDateFormatter = getLocaleDateFormatter(myLocale);
     initializeDateFormatting(localeDateFormatter);
@@ -96,7 +94,7 @@ int idConnectedUser;
             SizedBox(height: 20.0),
             buildCategoryRow('Trending Events', context),
             SizedBox(height: 10.0),
-            buildEventsList(context,_events),
+            buildEventsList(context, _events),
             SizedBox(height: 10.0),
             buildCategoryRow('Category', context),
             SizedBox(height: 10.0),
@@ -145,6 +143,7 @@ buildCategoryRow(String category, BuildContext context) {
     ],
   );
 }
+
 buildCategoryRowWithoutText(String category, BuildContext context) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -196,7 +195,7 @@ buildCategoryList(BuildContext context) {
   );
 }
 
-buildEventsList(BuildContext context,List<Event> events) {
+buildEventsList(BuildContext context, List<Event> events) {
   return Container(
     height: MediaQuery.of(context).size.height / 2.4,
     width: MediaQuery.of(context).size.width,
@@ -206,7 +205,6 @@ buildEventsList(BuildContext context,List<Event> events) {
       scrollDirection: Axis.horizontal,
       itemCount: events == null ? 0 : events.length,
       itemBuilder: (BuildContext context, int index) {
-
         return Padding(
           padding: const EdgeInsets.only(right: 10.0),
           child: SlideItem(
@@ -223,7 +221,7 @@ buildEventsList(BuildContext context,List<Event> events) {
   );
 }
 
-buildFriendsList(BuildContext context,List<Following> followings) {
+buildFriendsList(BuildContext context, List<Following> followings) {
   return Container(
     height: 50.0,
     child: ListView.builder(
@@ -232,7 +230,8 @@ buildFriendsList(BuildContext context,List<Following> followings) {
       shrinkWrap: true,
       itemCount: followings == null ? 0 : followings.length,
       itemBuilder: (BuildContext context, int index) {
-        File img = File('Users/macbookpro/Desktop/ProjetFlutter/API/${followings[index].image}');
+        File img = File(
+            'Users/macbookpro/Desktop/ProjetFlutter/API/${followings[index].image}');
 
         return Padding(
           padding: const EdgeInsets.only(right: 8.0),
@@ -245,18 +244,14 @@ buildFriendsList(BuildContext context,List<Following> followings) {
                   ),
                   radius: 25.0,
                 ),
-                onTap: (){
+                onTap: () {
                   print("friend clicked");
                 },
               ),
-
             ],
           ),
         );
       },
-
     ),
   );
 }
-
-

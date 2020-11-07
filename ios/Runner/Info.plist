@@ -7,7 +7,8 @@
 
 <key>NSCameraUsageDescrisption</key>
 <string>Allow access to camera to capture photos</string>
-
+<key>NSContactsUsageDescription</key>
+<string>Allow access to contacts</string>
 <key>NSMicrophoneUsageDescription</key>
 <string>Allow access to microphone</string>
 <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>

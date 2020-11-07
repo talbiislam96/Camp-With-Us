@@ -34,7 +34,7 @@ const kNumberTextStyle = TextStyle(
 
 class EditEventFormState extends State<EditEventForm> {
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
-
+//List<TextInputType> categories = ['Night Camps', 'Day Camps'];
   num _latitude;
   num _longitude;
   final TextEditingController _startTimeController =
@@ -256,7 +256,9 @@ class EditEventFormState extends State<EditEventForm> {
               ),
               new TextFormField(
                 controller: _infolineController,
+                keyboardType: TextInputType.phone,
                 decoration: new InputDecoration(
+
                   labelText: "Infoline",
                   //icon: new Icon(Icons.map),
                   border: new OutlineInputBorder(),
