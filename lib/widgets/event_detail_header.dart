@@ -53,41 +53,6 @@ class _EventDetailHeaderState extends State<EventDetailHeader> {
     });
   }
 
-  participate() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    idConnectedUser = preferences.getInt("id");
-    eventId = preferences.getInt("idEvent");
-    final responseParticipate =
-        await http.post("http://localhost:1337/participant/add", body: {
-      "id_user": idConnectedUser.toString(),
-      "id_evenement": eventId.toString(),
-    });
-    successToast("Thank you for participating !");
-  }
-
-  incrementPlacesEvent() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    eventId = preferences.getInt("idEvent");
-    final response = await http
-        //.put("http://10.0.2.2:1337/user/edit/$idConnectedUser", body: {
-        .put("http://localhost:1337/annuler/$eventId");
-  }
-
-  decrementPlacesEvent() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    eventId = preferences.getInt("idEvent");
-    final response = await http
-        //.put("http://10.0.2.2:1337/user/edit/$idConnectedUser", body: {
-        .put("http://localhost:1337/participate/$eventId");
-    final data = jsonDecode(response.body);
-    if (data == 'no more places') {
-      buttonIcon = Icon(Icons.check_circle);
-      buttonText = "No More Places";
-      buttonColor = Colors.green;
-      failToast("No More Places");
-    }
-  }
-
   onButtonClick() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     eventId = preferences.getInt("idEvent");
@@ -111,15 +76,7 @@ class _EventDetailHeaderState extends State<EventDetailHeader> {
       if (dataDecrement == 'no more places') {
         failToast("No More Places");
         print('no more places');
-      }
-      /*else if (dataVerify == 'participated already') {
-        failToast("Already participated");
-        print('Already participated');
-        buttonText = "Cancel";
-        buttonIcon = Icon(Icons.cancel);
-        buttonColor = Colors.red;
-      } */
-      else if (dataVerify == 'vous pouvez participer') {
+      } else if (dataVerify == 'vous pouvez participer') {
         final responseParticipate = await http.post(urlParticipate, body: {
           "id_user": idConnectedUser.toString(),
           "id_evenement": eventId.toString(),
@@ -133,7 +90,6 @@ class _EventDetailHeaderState extends State<EventDetailHeader> {
           buttonIcon = Icon(Icons.cancel);
           buttonColor = Colors.red;
         });
-
       }
     } else if (buttonText == "Cancel") {
       http.Request rq = http.Request('DELETE', Uri.parse(urlCancel));
@@ -143,42 +99,19 @@ class _EventDetailHeaderState extends State<EventDetailHeader> {
       };
       await http.Client().send(rq).then((response) {
         response.stream.bytesToString().then((value) {
-          //print(value); // it will print: {"status":"Success"}
           if (value == '"participation annule avec succes"') {
             setState(() {
               buttonIcon = Icon(Icons.check_circle);
               buttonText = "Participate";
               buttonColor = Colors.green;
             });
-
-            print('participation annule avec succes');
           } else {
             print("error cancel participation");
           }
         });
       });
-
-      final responseIncrement = await http.put(urlIncrement);
-      if (responseIncrement.statusCode == 200) {
-        print("incremented successfully");
-      } else if (responseIncrement.statusCode != 200) {
-        print("error increment");
-      }
+      await http.put(urlIncrement);
     }
-  }
-
-  void cancelParticipation() async {
-    http.Request rq = http.Request(
-        'DELETE', Uri.parse('http://localhost:1337/participant/delete'));
-    rq.bodyFields = {
-      'id_user': idConnectedUser.toString(),
-      'id_evenement': eventId.toString(),
-    };
-    await http.Client().send(rq).then((response) {
-      response.stream.bytesToString().then((value) {
-        print(value); // it will print: {"status":"Success"}
-      });
-    });
   }
 
   verifyParticipation() async {

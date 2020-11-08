@@ -7,7 +7,6 @@ import 'package:hexcolor/hexcolor.dart';
 
 import '../main_menu.dart';
 
-
 class Login extends StatefulWidget {
   @override
   _LoginState createState() => _LoginState();
@@ -42,8 +41,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
   login() async {
     //final response = await http.post("http://10.0.2.2:1337/login", body: {
     final response = await http.post("http://localhost:1337/login", body: {
-
-    "email": email,
+      "email": email,
       "password": password,
     });
 
@@ -55,19 +53,16 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
       loginToast("Check your email address please !");
     } else {
       String emailAPI = data['email'];
-      String nameAPI = data['prenom'];
-      String surnameAPI = data['name'];
       int id = data['id'];
       setState(() {
         _loginStatus = LoginStatus.signIn;
-        savePref(emailAPI, nameAPI, surnameAPI, id);
+        savePref(emailAPI, id);
       });
       print("successfully logged in");
-        Navigator.pushReplacement(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => MainMenu(signOut)),
       );
-
     }
   }
 
@@ -81,11 +76,9 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
         textColor: Colors.white);
   }
 
-  savePref(String email, String name, String surname, int id) async {
+  savePref(String email, int id) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
-      preferences.setString("prenom", name);
-      preferences.setString("name", surname);
       preferences.setString("email", email);
       preferences.setInt("id", id);
       preferences.commit();
@@ -93,12 +86,13 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
   }
 
   var value;
+  String mail;
 
   getPref() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       value = preferences.getInt("id");
-
+      mail = preferences.getString("email");
       _loginStatus = value == 1 ? LoginStatus.signIn : LoginStatus.notSignIn;
     });
   }
@@ -110,6 +104,8 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
       preferences.setString("name", null);
       preferences.setString("email", null);
       preferences.setString("id", null);
+      preferences.setString("idEvent", null);
+      preferences.setString("idProfile", null);
       print("empty sharedPref");
       preferences.commit();
       _loginStatus = LoginStatus.notSignIn;
@@ -119,27 +115,28 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+
     getPref();
+    email = mail ;
     _controller =
         AnimationController(vsync: this, duration: Duration(seconds: 2));
     _animation = Tween(begin: 50.0, end: 200.0).animate(_controller)
       ..addStatusListener((state) {
         if (state == AnimationStatus.completed) {
-        } else if (state == AnimationStatus.dismissed) {
-        }
+        } else if (state == AnimationStatus.dismissed) {}
       })
       ..addListener(() {
-        setState(() {
-
-        });
+        setState(() {});
       });
     _controller.forward();
   }
+
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     //switch (_loginStatus) {
@@ -164,12 +161,11 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                       Container(
                         alignment: Alignment.center,
                         child: Transform.rotate(
-                          angle: -2*3.14*_animation.value/200,
+                          angle: -2 * 3.14 * _animation.value / 200,
                           child: Container(
                             width: _animation.value,
                             height: _animation.value,
                             decoration: BoxDecoration(
-
                                 borderRadius: BorderRadius.circular(30.0),
                                 image: DecorationImage(
                                     image: AssetImage(
@@ -203,7 +199,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                               return "Please Insert Email";
                             }
                           },
-                          onSaved: (e) => email = e,
+                          onSaved: (e) => email = e ,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 16,
@@ -319,14 +315,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
         ),
       ),
     );
-    // break;
-
-    //  case LoginStatus.signIn:
-    return MainMenu(signOut);
-//        return ProfilePage(signOut);
-    //  break;
   }
-  // }
 }
 
 class Register extends StatefulWidget {
@@ -357,8 +346,7 @@ class _RegisterState extends State<Register> {
   save() async {
     //final response = await http.post("http://10.0.2.2:1337/register", body: {
     final response = await http.post("http://localhost:1337/register", body: {
-
-    "prenom": name,
+      "prenom": name,
       "name": surname,
       "email": email,
       "tel_user": mobile,
@@ -366,20 +354,16 @@ class _RegisterState extends State<Register> {
     });
 
     final data = jsonDecode(response.body);
-    print(data);
     // int value = data['value'];
     //String message = data['message'];
     if (data == "You are successfully registered !") {
       setState(() {
         Navigator.pop(context);
       });
-      print(data);
       registerToast(data);
     } else if (data == "Mail address already in use !'") {
-      print(data);
       registerToast("Your email address is already registered !");
     } else {
-      print(data);
       registerToast(data);
     }
   }
@@ -625,4 +609,3 @@ class _RegisterState extends State<Register> {
     );
   }
 }
-

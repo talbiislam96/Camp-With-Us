@@ -79,7 +79,7 @@ class _TrendingItemState extends State<TrendingItem> {
                         child: Image.file(
                           File(
                               'Users/macbookpro/Desktop/ProjetFlutter/API/${widget.img}' ?? 'Users/macbookpro/Desktop/Camp-With-Us/assets/logo.png'),
-                          fit: BoxFit.cover,
+                          fit: BoxFit.fill,
                         ),
                         //child: Image.asset('assets/backgroundProfile.jpg',
                          // fit: BoxFit.cover,
