@@ -58,15 +58,11 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
       String nameAPI = data['prenom'];
       String surnameAPI = data['name'];
       int id = data['id'];
-      print("email:" + emailAPI);
-      print(data);
       setState(() {
         _loginStatus = LoginStatus.signIn;
         savePref(emailAPI, nameAPI, surnameAPI, id);
       });
       print("successfully logged in");
-      //Navigator.pushReplacementNamed(context, "/logout");
-
         Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => MainMenu(signOut)),

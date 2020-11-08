@@ -124,7 +124,6 @@ class EditEventFormState extends State<EditEventForm> {
     });
 
     final data = jsonDecode(response.body);
-    print(data);
 
     if (data == "Evenement ajouté avec succés") {
       successToast("Camping added successfully !");
