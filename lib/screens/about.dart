@@ -1,20 +1,6 @@
-import 'package:camp_with_us/Entity/following.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:intl/date_symbol_data_local.dart';
-import 'package:camp_with_us/locale_time_toolkit.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'dart:async';
-import 'dart:io';
-import 'package:camp_with_us/screens/trending.dart';
-import 'package:camp_with_us/util/categories.dart';
-import 'package:camp_with_us/widgets/category_item.dart';
-import 'package:camp_with_us/widgets/search_card.dart';
-import 'package:camp_with_us/widgets/slide_item.dart';
 
-import '../Entity/event.dart';
 
 class About extends StatefulWidget {
   @override
@@ -41,7 +27,7 @@ class _AboutState extends State<About> {
               padding: EdgeInsets.all(10),
               color: Colors.blue,
               child: Text(
-                "About this application:",
+                "About App:",
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 20.0,
@@ -51,7 +37,7 @@ class _AboutState extends State<About> {
             ),
             Flexible(
               child: Text(
-                "This application let your organize and manage your camping events and guide you through weather API.",
+                "Camp With Us an application which make you manage your camping events and keep you updated about latest campings.",
                 maxLines: 4,
                 style: TextStyle(
                   fontSize: 18.0,

@@ -101,7 +101,7 @@ class EditEventFormState extends State<EditEventForm> {
         });
   }
 
-  add() async {
+  Future<void> add() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     idConnectedUser = preferences.getInt("id");
     if (_image == null) return;

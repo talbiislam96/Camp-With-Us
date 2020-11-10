@@ -1,3 +1,6 @@
+import 'package:camp_with_us/WeatherAPI/screensWeather/loading_screen.dart';
+import 'package:camp_with_us/WeatherAPI/servicesWeather/networking.dart';
+import 'package:camp_with_us/WeatherAPI/servicesWeather/weather.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
@@ -21,6 +24,11 @@ class _StorylineState extends State<Storyline> {
       phoneEvent,
       categoryEvent;
 
+  WeatherModel weather = WeatherModel();
+  int temperature;
+  String cityName;
+  String city;
+
 
   getPref() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -37,22 +45,47 @@ class _StorylineState extends State<Storyline> {
     setState(() {
       locationEvent = data['lieux_evenement'];
       nameEvent = data['nom_evenement'];
+      preferences.setString("city", locationEvent);
       descriptionEvent = data['description_evenement'];
       dStartEvent = data['date_debut_evenement'];
       dEndEvent = data['date_fin_evenement'];
       phoneEvent = data['infoline'];
       categoryEvent = data['type_evenement'];
+
     });
   }
 
+  void updateUI(dynamic weatherData) {
+    setState(() {
+      if (weatherData == null) {
+        temperature = 0;
+        cityName = '';
+        return;
+      } else {
+        var temp = weatherData['main']['temp'];
+        temperature = temp.toInt();
+        cityName = weatherData['name'];
+        print(temperature);
+      }
+    });
+  }
+  Future<void> getWeather() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    city = preferences.getString("city");
 
-
+    var weatherData = await weather.getCityWeather(city);
+    updateUI(weatherData);
+  }
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getPref();
     getEventInfo();
+      getWeather();
+
+
+
   }
 
   @override
@@ -133,12 +166,12 @@ class _StorylineState extends State<Storyline> {
                 color: Colors.black45,
                 fontSize: 16.0,
               ),),
-              SizedBox(width: 100.0),
+              SizedBox(width: 150.0),
 
               GestureDetector(
                 onTap: () {},
                 child: Text(
-                  "See route >",
+                  "See Route >",
                   style: TextStyle(
                     color: Theme.of(context).accentColor,
                   ),
@@ -147,6 +180,45 @@ class _StorylineState extends State<Storyline> {
             ],
           ),
           SizedBox(height: 8.0),
+          SizedBox(width: 5.0),
+          Row(
+            children: [
+              Icon(
+                Icons.cloud,
+                color: Colors.lightBlue,
+              ),
+              SizedBox(width: 5.0),
+
+              Text('$temperature°C now in ${locationEvent.toString()}',
+                style: textTheme.body1.copyWith(
+                  color: Colors.black45,
+                  fontSize: 16.0,
+                ),
+              ),
+              SizedBox(width: 55.0),
+
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return LoadingScreen();
+                      },
+                    ),
+                  );
+                },
+                child: Text(
+                  "See Weather >",
+                  style: TextStyle(
+                    color: Theme.of(context).accentColor,
+                  ),
+                ),
+              ),
+
+            ],
+          ),
+
           Text(
             'Description',
             style: textTheme.subhead.copyWith(fontSize: 18.0),

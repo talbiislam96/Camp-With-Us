@@ -49,16 +49,6 @@ class _SlideItemState extends State<SlideItem> {
       preferences.commit();
 
   }
-  /*void getLocationData() async {
-    var weatherData = await WeatherModel().getLocationWeather();
-    print("slide item location: $weatherData");
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return EventDetailHeader(
-        locationWeather: weatherData,
-      );
-    }));
-
-  }*/
 
   @override
   Widget build(BuildContext context) {

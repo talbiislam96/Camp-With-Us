@@ -1,8 +1,6 @@
 import 'package:camp_with_us/WeatherAPI/screensWeather/loading_screen.dart';
-import 'package:camp_with_us/WeatherAPI/screensWeather/location_screen.dart';
 import 'package:camp_with_us/screens/about.dart';
 import 'package:camp_with_us/screens/add_event.dart';
-import 'package:camp_with_us/screens/event_details.dart';
 import 'package:camp_with_us/screens/myevents.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,19 +23,17 @@ class _MainMenuState extends State<MainMenu> {
   int _page = 0;
   List icons = [
     Icons.home,
+    Icons.event,
     Icons.add,
     Icons.person,
-    Icons.event,
-    Icons.wb_cloudy,
     Icons.info
    // Icons.ac_unit,
   ];
   List<Widget> _widgetOptions = <Widget>[
     Events(),
+    Myevents(),
     AddEventPage(),
     ProfilePage(),
-    Myevents(),
-    LoadingScreen(),
     About()
   ];
 
@@ -51,7 +47,7 @@ class _MainMenuState extends State<MainMenu> {
             onPressed: () {
               signOut();
             },
-            icon: Icon(Icons.exit_to_app),
+            icon: Icon(Icons.lock_open),
           )
         ],
       ),
@@ -64,24 +60,25 @@ class _MainMenuState extends State<MainMenu> {
       bottomNavigationBar: BottomAppBar(
         child: Row(
           mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.baseline,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             SizedBox(width: 5),
             buildTabIcon(0),
-            buildTabIcon(1),
-            buildTabIcon(2),
             buildTabIcon(3),
+            buildTabIcon(1),
+
+            buildTabIcon(2),
+
             buildTabIcon(4),
-            buildTabIcon(5),
+
             SizedBox(width: 5),
           ],
         ),
         color: Theme.of(context).primaryColor,
-        //shape: CircularNotchedRectangle(),
+        shape: CircularNotchedRectangle(),
       ),
-     // floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
-      //floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
 
     );
   }
@@ -138,16 +135,6 @@ class _MainMenuState extends State<MainMenu> {
   }
 
   buildTabIcon(int index) {
-    if (index == 2) {
-      return IconButton(
-        icon: Icon(
-          icons[index],
-          size: 24.0,
-          color: Colors.transparent,
-        ),
-        onPressed: null,
-      );
-    } else {
       return IconButton(
         icon: Icon(
           icons[index],
@@ -158,6 +145,6 @@ class _MainMenuState extends State<MainMenu> {
             : Theme.of(context).textTheme.caption.color,
         onPressed: () => _pageController.jumpToPage(index),
       );
-    }
+
   }
 }
