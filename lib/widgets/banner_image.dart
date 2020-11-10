@@ -5,8 +5,7 @@ import 'package:http/http.dart' as http;
 import 'dart:io';
 
 class ArcBannerImage extends StatefulWidget {
-  //ArcBannerImage(this.imageUrl);
-  //final String imageUrl;
+
   ArcBannerImage();
 
   @override

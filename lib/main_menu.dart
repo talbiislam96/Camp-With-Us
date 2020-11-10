@@ -1,5 +1,6 @@
 import 'package:camp_with_us/WeatherAPI/screensWeather/loading_screen.dart';
 import 'package:camp_with_us/WeatherAPI/screensWeather/location_screen.dart';
+import 'package:camp_with_us/screens/about.dart';
 import 'package:camp_with_us/screens/add_event.dart';
 import 'package:camp_with_us/screens/event_details.dart';
 import 'package:camp_with_us/screens/myevents.dart';
@@ -27,7 +28,8 @@ class _MainMenuState extends State<MainMenu> {
     Icons.add,
     Icons.person,
     Icons.event,
-    Icons.wb_cloudy
+    Icons.wb_cloudy,
+    Icons.info
    // Icons.ac_unit,
   ];
   List<Widget> _widgetOptions = <Widget>[
@@ -35,7 +37,8 @@ class _MainMenuState extends State<MainMenu> {
     AddEventPage(),
     ProfilePage(),
     Myevents(),
-    LoadingScreen()
+    LoadingScreen(),
+    About()
   ];
 
   @override
@@ -48,7 +51,7 @@ class _MainMenuState extends State<MainMenu> {
             onPressed: () {
               signOut();
             },
-            icon: Icon(Icons.lock_open),
+            icon: Icon(Icons.exit_to_app),
           )
         ],
       ),
@@ -61,7 +64,8 @@ class _MainMenuState extends State<MainMenu> {
       bottomNavigationBar: BottomAppBar(
         child: Row(
           mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.baseline,
           children: <Widget>[
             SizedBox(width: 5),
             buildTabIcon(0),
@@ -69,14 +73,15 @@ class _MainMenuState extends State<MainMenu> {
             buildTabIcon(2),
             buildTabIcon(3),
             buildTabIcon(4),
+            buildTabIcon(5),
             SizedBox(width: 5),
           ],
         ),
         color: Theme.of(context).primaryColor,
-        shape: CircularNotchedRectangle(),
+        //shape: CircularNotchedRectangle(),
       ),
-      floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+     // floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
+      //floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
 
     );
   }
