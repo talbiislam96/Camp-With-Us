@@ -124,16 +124,16 @@ class EditEventFormState extends State<EditEventForm> {
     });
 
     final data = jsonDecode(response.body);
-
-    if (data == "Evenement ajouté avec succés") {
-      successToast("Camping added successfully !");
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => Events()),
-      );
-    } else {
-      errorToast("Error Adding Camping");
-    }
+    successToast("Camping added successfully !");
+    _startTimeController.text = "";
+    _endTimeController.text = "";
+    _titleController.text = "";
+    _descriptionController.text = "";
+    _priceController.text = "";
+    _infolineController.text = "";
+    _placeController.text = "";
+    _typeController.text = "";
+    nombre = 20;
   }
 
 

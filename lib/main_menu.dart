@@ -64,10 +64,10 @@ class _MainMenuState extends State<MainMenu> {
           children: <Widget>[
             SizedBox(width: 5),
             buildTabIcon(0),
-            buildTabIcon(3),
             buildTabIcon(1),
-
             buildTabIcon(2),
+
+            buildTabIcon(3),
 
             buildTabIcon(4),
 

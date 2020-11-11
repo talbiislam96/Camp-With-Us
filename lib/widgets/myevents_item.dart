@@ -1,3 +1,4 @@
+import 'package:camp_with_us/Entity/event.dart';
 import 'package:camp_with_us/screens/event_details.dart';
 import 'package:flutter/material.dart';
 import 'package:camp_with_us/util/const.dart';
@@ -29,6 +30,10 @@ class MyeventsItem extends StatefulWidget {
 }
 
 class _MyeventsItemState extends State<MyeventsItem> {
+  List<Event> _events = List<Event>();
+  int idConnectedUser;
+
+
   savePref(int id) async {
     print("event clicked");
     print(id);
@@ -37,6 +42,41 @@ class _MyeventsItemState extends State<MyeventsItem> {
     preferences.commit();
 
   }
+  Future<List<Event>> fetchMyEvents() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    idConnectedUser = preferences.getInt("id");
+    var response = await http.get(
+        Uri.encodeFull("http://localhost:1337/myevents/$idConnectedUser"),
+        //Uri.encodeFull("http://10.0.2.2:1337/evenement/show"),
+        headers: {"Accept": "application/json"});
+    var events = List<Event>();
+
+    if (response.statusCode == 200) {
+      var eventsJson = json.decode(response.body);
+      print(eventsJson);
+      for (var eventJson in eventsJson) {
+        events.add(Event.fromJson(eventJson));
+      }
+    }
+    return events;
+  }
+  Future<void> deleteEvent() async{
+    String urlDelete = "http://localhost:1337/evenement/delete/${widget.id}";
+    http.Request rq = http.Request('DELETE', Uri.parse(urlDelete));
+    await http.Client().send(rq).then((response) {
+      response.stream.bytesToString().then((value) {
+        print("deleted");
+
+      });
+      fetchMyEvents().then((value){
+        setState(() {
+          _events.addAll(value);
+        });
+      });
+    });
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -68,7 +108,6 @@ class _MyeventsItemState extends State<MyeventsItem> {
                 Stack(
                   children: <Widget>[
                     Container(
-
                       height: MediaQuery.of(context).size.height / 3.5,
                       width: MediaQuery.of(context).size.width,
                       child: ClipRRect(
@@ -117,6 +156,28 @@ class _MyeventsItemState extends State<MyeventsItem> {
                       ),
                     ),
                     Positioned(
+                      bottom: 6.0,
+                      right: 6.0,
+                      child: ButtonTheme(
+                        child: RaisedButton(
+                          child: Row(
+                            children: [
+                              Icon(Icons.delete_forever),
+                              Text("Delete"),
+                            ],
+                          ),
+                          textColor: Colors.white,
+                          color: Colors.red,
+                          onPressed: () {
+                            setState(() {
+                              deleteEvent();
+                            });
+                          },
+                          shape: StadiumBorder(),
+                        ),
+                      ),
+                    ),
+                    Positioned(
                       top: 6.0,
                       left: 6.0,
                       child: Card(
@@ -154,6 +215,7 @@ class _MyeventsItemState extends State<MyeventsItem> {
                     ),
                   ),
                 ),
+
                 SizedBox(height: 7.0),
                 Expanded(
                   child: Padding(
@@ -208,6 +270,9 @@ class _MyeventsItemState extends State<MyeventsItem> {
                             ),
                           ),
                         ),
+                        SizedBox(height: 10.0),
+
+
                       ],
                     ),
                   ),

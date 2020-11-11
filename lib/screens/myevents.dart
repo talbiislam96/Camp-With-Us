@@ -48,11 +48,14 @@ class _MyeventsState extends State<Myevents> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    fetchEvents().then((value){
-      setState(() {
-        _events.addAll(value);
+    setState(() {
+      fetchEvents().then((value){
+        setState(() {
+          _events.addAll(value);
+        });
       });
     });
+
   }
 
   @override
