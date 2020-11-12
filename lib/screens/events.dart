@@ -33,7 +33,7 @@ class _EventState extends State<Events> {
     idConnectedUser = preferences.getInt("id");
     var response = await http.get(
         Uri.encodeFull("http://localhost:1337/follow/show/$idConnectedUser"),
-        //Uri.encodeFull("http://10.0.2.2:1337/follow/show/$idConnectedUser"),
+       // Uri.encodeFull("http://10.0.2.2:1337/follow/show/$idConnectedUser"),
         headers: {"Accept": "application/json"});
     var followings = List<Following>();
 
@@ -50,7 +50,7 @@ class _EventState extends State<Events> {
   Future<List<Event>> fetchEvents() async {
     var response =
         await http.get(Uri.encodeFull("http://localhost:1337/evenement/show"),
-            // Uri.encodeFull("http://10.0.2.2:1337/evenement/show"),
+           // await http.get(Uri.encodeFull("http://10.0.2.2:1337/evenement/show"),
             headers: {"Accept": "application/json"});
     var events = List<Event>();
 

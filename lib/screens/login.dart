@@ -4,7 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:hexcolor/hexcolor.dart';
-
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import '../main_menu.dart';
 
 class Login extends StatefulWidget {
@@ -39,7 +39,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
   }
 
   login() async {
-    //final response = await http.post("http://10.0.2.2:1337/login", body: {
+   // final response = await http.post("http://10.0.2.2:1337/login", body: {
     final response = await http.post("http://localhost:1337/login", body: {
       "email": email,
       "password": password,
@@ -61,8 +61,8 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
       print("successfully logged in");
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => MainMenu(signOut)),
-      );
+        MaterialPageRoute(builder: (context) => MainMenu(signOut),
+      ));
     }
   }
 

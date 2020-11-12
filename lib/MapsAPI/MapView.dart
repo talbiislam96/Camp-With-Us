@@ -83,12 +83,15 @@ class _MapViewState extends State<MapView> {
     );
   }
 
+  void setStateIfMounted(f) {
+    if (mounted) setState(f);
+  }
   // Method for retrieving the current location
   _getCurrentLocation() async {
     await _geolocator
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
         .then((Position position) async {
-      setState(() {
+      setStateIfMounted(() {
         _currentPosition = position;
         print('CURRENT POS: $_currentPosition');
         mapController.animateCamera(
@@ -114,7 +117,7 @@ class _MapViewState extends State<MapView> {
 
       Placemark place = p[0];
 
-      setState(() {
+      setStateIfMounted(() {
         _currentAddress =
         "${place.name}, ${place.locality}, ${place.postalCode}, ${place
             .country}";
@@ -236,7 +239,7 @@ class _MapViewState extends State<MapView> {
           );
         }
 
-        setState(() {
+        setStateIfMounted(() {
           _placeDistance = totalDistance.toStringAsFixed(2);
           print('DISTANCE: $_placeDistance km');
         });
@@ -309,6 +312,7 @@ class _MapViewState extends State<MapView> {
         key: _scaffoldKey,
         body: Stack(
           children: <Widget>[
+
             // Map View
             GoogleMap(
               markers: markers != null ? Set<Marker>.from(markers) : null,
@@ -410,7 +414,7 @@ class _MapViewState extends State<MapView> {
                               controller: startAddressController,
                               width: width,
                               locationCallback: (String value) {
-                                setState(() {
+                                setStateIfMounted(() {
                                   _startAddress = value;
                                 });
                               }),
@@ -422,7 +426,7 @@ class _MapViewState extends State<MapView> {
                               controller: destinationAddressController,
                               width: width,
                               locationCallback: (String value) {
-                                setState(() {
+                                setStateIfMounted(() {
                                   _destinationAddress = value;
                                 });
                               }),
@@ -442,7 +446,7 @@ class _MapViewState extends State<MapView> {
                             onPressed: (_startAddress != '' &&
                                 _destinationAddress != '')
                                 ? () async {
-                              setState(() {
+                              setStateIfMounted(() {
                                 if (markers.isNotEmpty) markers.clear();
                                 if (polylines.isNotEmpty)
                                   polylines.clear();
@@ -488,6 +492,21 @@ class _MapViewState extends State<MapView> {
                         ],
                       ),
                     ),
+                  ),
+                ),
+              ),
+            ),
+            SafeArea(
+              child:   Align(
+                alignment: Alignment.topLeft,
+                child: FlatButton(
+                  onPressed: () {
+                    Navigator.pop(
+                      context,
+                    );                  },
+                  child: Icon(
+                    Icons.arrow_back_ios,
+                    size: 30.0,
                   ),
                 ),
               ),

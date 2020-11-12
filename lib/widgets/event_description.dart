@@ -1,3 +1,4 @@
+import 'package:camp_with_us/MapsAPI/MapView.dart';
 import 'package:camp_with_us/WeatherAPI/screensWeather/loading_screen.dart';
 import 'package:camp_with_us/WeatherAPI/servicesWeather/networking.dart';
 import 'package:camp_with_us/WeatherAPI/servicesWeather/weather.dart';
@@ -169,7 +170,17 @@ class _StorylineState extends State<Storyline> {
               SizedBox(width: 150.0),
 
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  print("route clicked");
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return MapView();
+                      },
+                    ),
+                  );
+                },
                 child: Text(
                   "See Route >",
                   style: TextStyle(
