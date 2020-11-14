@@ -1,11 +1,12 @@
 import 'package:camp_with_us/MapsAPI/MapView.dart';
-import 'package:camp_with_us/WeatherAPI/screensWeather/loading_screen.dart';
-import 'package:camp_with_us/WeatherAPI/servicesWeather/networking.dart';
+import 'package:camp_with_us/WeatherAPI/screensWeather/location_screen.dart';
 import 'package:camp_with_us/WeatherAPI/servicesWeather/weather.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'dart:async';
+
 
 
 class Storyline extends StatefulWidget {
@@ -30,7 +31,18 @@ class _StorylineState extends State<Storyline> {
   String cityName;
   String city;
 
+  void getLocationData() async {
+    var weatherData = await WeatherModel().getLocationWeather();
+    Future.delayed(Duration(seconds: 1), () {
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return LocationScreen(
+          locationWeather: weatherData,
+        );
+      }));
+    });
 
+
+  }
   getPref() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     int eventId = preferences.getInt("idEvent");
@@ -81,9 +93,11 @@ class _StorylineState extends State<Storyline> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getPref();
+
+    //getPref();
     getEventInfo();
       getWeather();
+
 
 
 
@@ -210,14 +224,8 @@ class _StorylineState extends State<Storyline> {
 
               GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return LoadingScreen();
-                      },
-                    ),
-                  );
+                  getLocationData();
+
                 },
                 child: Text(
                   "See Weather >",

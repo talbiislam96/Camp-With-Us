@@ -189,16 +189,7 @@ class _EventDetailHeaderState extends State<EventDetailHeader> {
     return Stack(
       children: [
         ArcBannerImage(),
-        Positioned(
-          left: 8.0,
-          top: 60.0,
-          child: InkWell(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: Icon(Icons.arrow_back_ios, color: Colors.white),
-          ),
-        ),
+
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,

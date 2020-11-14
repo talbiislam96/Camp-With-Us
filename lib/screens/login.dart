@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import '../main_menu.dart';
+import 'package:local_auth/local_auth.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -21,6 +22,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
   LoginStatus _loginStatus = LoginStatus.notSignIn;
   String email, password;
   final _key = new GlobalKey<FormState>();
+  final LocalAuthentication localAuth = LocalAuthentication();
 
   bool _secureText = true;
 
@@ -253,13 +255,40 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                         height: 12,
                       ),
 
-                      FlatButton(
-                        onPressed: null,
-                        child: Text(
-                          "Forgot Password?",
-                          style: TextStyle(
-                              color: HexColor("#EDEBE6"),
-                              fontWeight: FontWeight.bold),
+                      GestureDetector(
+                        onTap: () async {
+                          bool weCanCheckBiometrics = await localAuth.canCheckBiometrics;
+
+                          if (weCanCheckBiometrics) {
+                            bool authenticated = await localAuth.authenticateWithBiometrics(
+                              localizedReason: "Authenticate to see camping events",
+                            );
+
+                            if (authenticated) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MainMenu(signOut),
+                                ),
+                              );
+                            }
+                          }
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(
+                              Icons.fingerprint,
+                              size: 80.0,
+                            ),
+                            Text(
+                              "Touch to Login",
+                              style: TextStyle(
+                                  color: HexColor("#EDEBE6"),
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
                         ),
                       ),
 

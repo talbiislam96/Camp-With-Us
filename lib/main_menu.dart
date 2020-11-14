@@ -2,6 +2,7 @@ import 'package:camp_with_us/WeatherAPI/screensWeather/loading_screen.dart';
 import 'package:camp_with_us/screens/about.dart';
 import 'package:camp_with_us/screens/add_event.dart';
 import 'package:camp_with_us/screens/myevents.dart';
+import 'package:camp_with_us/screens/welcomePage.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:camp_with_us/screens/profile.dart';
@@ -41,6 +42,7 @@ class _MainMenuState extends State<MainMenu> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text('Camp With Us'),
         backgroundColor: Theme.of(context).primaryColor,
         actions: <Widget>[
           IconButton(
@@ -57,32 +59,34 @@ class _MainMenuState extends State<MainMenu> {
         onPageChanged: onPageChanged,
         children: _widgetOptions,
       ),
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            SizedBox(width: 5),
-            buildTabIcon(0),
-            buildTabIcon(1),
-            buildTabIcon(2),
-
-            buildTabIcon(3),
-
-            buildTabIcon(4),
-
-            SizedBox(width: 5),
-          ],
-        ),
-        color: Theme.of(context).primaryColor,
-        shape: CircularNotchedRectangle(),
-      ),
+      bottomNavigationBar: bottomMenu(),
       floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
 
     );
   }
+Widget bottomMenu(){
+    return BottomAppBar(
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          SizedBox(width: 5),
+          buildTabIcon(0),
+          buildTabIcon(1),
+          buildTabIcon(2),
 
+          buildTabIcon(3),
+
+          buildTabIcon(4),
+
+          SizedBox(width: 5),
+        ],
+      ),
+      color: Theme.of(context).primaryColor,
+      shape: CircularNotchedRectangle(),
+    );
+}
   void navigationTapped(int page) {
     _pageController.jumpToPage(page);
   }
@@ -109,7 +113,7 @@ class _MainMenuState extends State<MainMenu> {
       widget.signOut();
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => Login()),
+        MaterialPageRoute(builder: (context) => WelcomePage()),
       );
       print("signed out");
     });

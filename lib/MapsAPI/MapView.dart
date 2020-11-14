@@ -309,6 +309,9 @@ class _MapViewState extends State<MapView> {
       height: height,
       width: width,
       child: Scaffold(
+        appBar: AppBar(
+          title: Text('Route'),
+        ),
         key: _scaffoldKey,
         body: Stack(
           children: <Widget>[
@@ -492,21 +495,6 @@ class _MapViewState extends State<MapView> {
                         ],
                       ),
                     ),
-                  ),
-                ),
-              ),
-            ),
-            SafeArea(
-              child:   Align(
-                alignment: Alignment.topLeft,
-                child: FlatButton(
-                  onPressed: () {
-                    Navigator.pop(
-                      context,
-                    );                  },
-                  child: Icon(
-                    Icons.arrow_back_ios,
-                    size: 30.0,
                   ),
                 ),
               ),
