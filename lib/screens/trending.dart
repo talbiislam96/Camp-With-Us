@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:camp_with_us/util/restaurants.dart';
-import 'package:camp_with_us/widgets/search_card.dart';
 import 'package:camp_with_us/widgets/trending_item.dart';
 import 'package:camp_with_us/Entity/event.dart';
 import 'package:http/http.dart' as http;
@@ -19,7 +17,6 @@ class _TrendingState extends State<Trending> {
   _TrendingState({Key key, @required this.events}) ;
 
   String imageEvent;
-  //final Event event = ModalRoute.of(context).settings.arguments;
 
   Future<List<Event>> fetchEvents() async {
     var response = await http.get(

@@ -11,11 +11,10 @@ class AddEventPage extends StatefulWidget {
 class AddEventPageState extends State<AddEventPage> {
   void Function(Map<String,String> p1) get submitForm => null;
 
-
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-    appBar: new AppBar
+      appBar: new AppBar
       (title:
     new Text(
         "Add Your Event",

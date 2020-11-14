@@ -34,7 +34,7 @@ class _MyeventsItemState extends State<MyeventsItem> {
   int idConnectedUser;
 
 
-  savePref(int id) async {
+  Future<void> savePref(int id) async {
     print("event clicked");
     print(id);
     SharedPreferences preferences = await SharedPreferences.getInstance();

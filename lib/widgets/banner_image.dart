@@ -17,8 +17,9 @@ class _ArcBannerImageState extends State<ArcBannerImage> {
   int eventId;
   String imageEvent;
   File _image;
+  int profileId;
 
-  getEventInfo() async {
+  Future<void> getEventInfo() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     eventId = preferences.getInt("idEvent");
     final response =
@@ -27,6 +28,8 @@ class _ArcBannerImageState extends State<ArcBannerImage> {
     setState(() {
       final data = jsonDecode(response.body);
       imageEvent = data['photo_evenement'];
+      profileId = data['id_user'];
+preferences.setInt("idProfile", profileId);
       _image = File("Users/macbookpro/Desktop/ProjetFlutter/API/$imageEvent");
       //_image = File("C:/Users/islam/Desktop/camp_with_us/$imageProfile");
     });

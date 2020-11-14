@@ -32,7 +32,6 @@ class RatingInformation extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          //event.rating.toString(),
           '8',
           style: textTheme.title.copyWith(
             fontWeight: FontWeight.w400,

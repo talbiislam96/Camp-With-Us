@@ -31,7 +31,7 @@ class _StorylineState extends State<Storyline> {
   String cityName;
   String city;
 
-  void getLocationData() async {
+  Future<void> getLocationData() async {
     var weatherData = await WeatherModel().getLocationWeather();
     Future.delayed(Duration(seconds: 1), () {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -85,7 +85,6 @@ class _StorylineState extends State<Storyline> {
   Future<void> getWeather() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     city = preferences.getString("city");
-
     var weatherData = await weather.getCityWeather(city);
     updateUI(weatherData);
   }
@@ -93,13 +92,9 @@ class _StorylineState extends State<Storyline> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
-    //getPref();
+    getPref();
     getEventInfo();
-      getWeather();
-
-
-
+    getWeather();
 
   }
 

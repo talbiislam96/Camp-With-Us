@@ -29,25 +29,23 @@ class TrendingItem extends StatefulWidget {
 }
 
 class _TrendingItemState extends State<TrendingItem> {
-  savePref(int id) async {
+  Future<void> savePref(int id) async {
     print("event clicked");
     print(id);
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setInt("idEvent", id);
     preferences.commit();
-
   }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-
       padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
       child: Container(
-
         height: MediaQuery.of(context).size.height / 2.5,
         width: MediaQuery.of(context).size.width,
         child: GestureDetector(
-          onTap: (){
+          onTap: () {
             savePref(widget.id);
             Navigator.push(
               context,
@@ -59,16 +57,14 @@ class _TrendingItemState extends State<TrendingItem> {
             );
           },
           child: Card(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0)),
             elevation: 3.0,
             child: Column(
-              //mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 Stack(
                   children: <Widget>[
                     Container(
-
                       height: MediaQuery.of(context).size.height / 3.5,
                       width: MediaQuery.of(context).size.width,
                       child: ClipRRect(
@@ -77,17 +73,10 @@ class _TrendingItemState extends State<TrendingItem> {
                           topRight: Radius.circular(10),
                         ),
                         child: Image.file(
-                          File(
-                              'Users/macbookpro/Desktop/ProjetFlutter/API/${widget.img}' ?? 'Users/macbookpro/Desktop/Camp-With-Us/assets/logo.png'),
+                          File('Users/macbookpro/Desktop/ProjetFlutter/API/${widget.img}' ??
+                              'Users/macbookpro/Desktop/Camp-With-Us/assets/logo.png'),
                           fit: BoxFit.fill,
                         ),
-                        //child: Image.asset('assets/backgroundProfile.jpg',
-                         // fit: BoxFit.cover,
-
-
-                       // ),
-
-
                       ),
                     ),
                     Positioned(

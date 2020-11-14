@@ -1,4 +1,3 @@
-import 'package:camp_with_us/WeatherAPI/screensWeather/loading_screen.dart';
 import 'package:camp_with_us/screens/about.dart';
 import 'package:camp_with_us/screens/add_event.dart';
 import 'package:camp_with_us/screens/myevents.dart';
@@ -7,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:camp_with_us/screens/profile.dart';
 import 'package:camp_with_us/screens/events.dart';
-import 'package:camp_with_us/screens/login.dart';
 
 
 
@@ -94,7 +92,7 @@ Widget bottomMenu(){
   String email = "", name = "", surname = "";
   int id = 0;
 
-  getPref() async {
+  Future<void> getPref() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       id = preferences.getInt("id");

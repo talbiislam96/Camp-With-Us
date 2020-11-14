@@ -24,7 +24,7 @@ class _ActorScrollerState extends State<ActorScroller> {
   int idEvent;
   int idProfile;
 
-  savePref() async {
+  Future<void> savePref() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setInt("idProfile", idProfile);
     int id = preferences.getInt("idProfile");
@@ -69,8 +69,6 @@ class _ActorScrollerState extends State<ActorScroller> {
   }
   buildParticipantsList(BuildContext context, List<Participant> participants)  {
     var textTheme = Theme.of(context).textTheme;
-   // SharedPreferences preferences = await SharedPreferences.getInstance();
-   // preferences.setInt("idProfile", participants[index].idUser);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,7 +83,6 @@ class _ActorScrollerState extends State<ActorScroller> {
         SizedBox.fromSize(
           size: const Size.fromHeight(120.0),
           child: ListView.builder(
-            //itemCount: followers.length,
             itemCount: participants == null ? 0 : participants.length,
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.only(top: 12.0, left: 20.0),

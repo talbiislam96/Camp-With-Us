@@ -9,8 +9,6 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:camp_with_us/widgets/bezierContainer.dart';
 import 'dart:convert';
 
-
-
 class LoginPage extends StatefulWidget {
   LoginPage({Key key, this.title}) : super(key: key);
   final String title;
@@ -18,10 +16,10 @@ class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
 }
+
 enum LoginStatus { notSignIn, signIn }
 
 class _LoginPageState extends State<LoginPage> {
-
   LoginStatus _loginStatus = LoginStatus.notSignIn;
   String email, password;
   final _key = new GlobalKey<FormState>();
@@ -42,7 +40,7 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  login() async {
+  Future<void> login() async {
     // final response = await http.post("http://10.0.2.2:1337/login", body: {
     final response = await http.post("http://localhost:1337/login", body: {
       "email": email,
@@ -65,7 +63,8 @@ class _LoginPageState extends State<LoginPage> {
       print("successfully logged in");
       Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => MainMenu(signOut),
+          MaterialPageRoute(
+            builder: (context) => MainMenu(signOut),
           ));
     }
   }
@@ -80,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
         textColor: Colors.white);
   }
 
-  savePref(String email, int id) async {
+  Future<void> savePref(String email, int id) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       preferences.setString("email", email);
@@ -92,7 +91,7 @@ class _LoginPageState extends State<LoginPage> {
   var value;
   String mail;
 
-  getPref() async {
+  Future<void> getPref() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       value = preferences.getInt("id");
@@ -101,7 +100,7 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-  signOut() async {
+  Future<void> signOut() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       preferences.setString("prenom", null);
@@ -120,9 +119,8 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
     getPref();
-    email = mail ;
+    email = mail;
   }
-
 
   Widget _backButton() {
     return InkWell(
@@ -159,7 +157,7 @@ class _LoginPageState extends State<LoginPage> {
                   return "Please Insert Email";
                 }
               },
-              onSaved: (e) => email = e ,
+              onSaved: (e) => email = e,
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 16,
@@ -189,14 +187,12 @@ class _LoginPageState extends State<LoginPage> {
                 labelText: "Password",
                 prefixIcon: Padding(
                   padding: EdgeInsets.only(left: 20, right: 15),
-                  child: Icon(Icons.phonelink_lock,
-                      color: Colors.black),
+                  child: Icon(Icons.phonelink_lock, color: Colors.black),
                 ),
                 suffixIcon: IconButton(
                   onPressed: showHide,
-                  icon: Icon(_secureText
-                      ? Icons.visibility_off
-                      : Icons.visibility),
+                  icon: Icon(
+                      _secureText ? Icons.visibility_off : Icons.visibility),
                 ),
               ),
             ),
@@ -208,7 +204,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _submitButton() {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         print(password);
         check();
       },
@@ -236,8 +232,6 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-
-
 
   Widget _createAccountLabel() {
     return InkWell(
@@ -308,7 +302,6 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -328,7 +321,6 @@ class _LoginPageState extends State<LoginPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-
                   SizedBox(height: height * .2),
                   Container(
                     decoration: BoxDecoration(
@@ -342,7 +334,6 @@ class _LoginPageState extends State<LoginPage> {
                   _emailPasswordWidget(),
                   SizedBox(height: 20),
                   _submitButton(),
-
                   SizedBox(height: height * .055),
                   _createAccountLabel(),
                 ],

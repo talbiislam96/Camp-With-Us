@@ -38,7 +38,7 @@ class _SignUpPageState extends State<SignUpPage> {
     }
   }
 
-  save() async {
+  Future<void> save() async {
     //final response = await http.post("http://10.0.2.2:1337/register", body: {
     final response = await http.post("http://localhost:1337/register", body: {
       "prenom": name,

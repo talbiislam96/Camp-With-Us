@@ -1,5 +1,4 @@
 import 'package:camp_with_us/main_menu.dart';
-import 'package:camp_with_us/screens/login.dart';
 import 'package:camp_with_us/screens/loginPage.dart';
 import 'package:camp_with_us/screens/signup.dart';
 import 'package:flutter/material.dart';

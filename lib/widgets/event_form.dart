@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:camp_with_us/screens/events.dart';
-import 'package:camp_with_us/screens/trending.dart';
-import 'package:camp_with_us/util/categories.dart';
+
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -196,7 +194,6 @@ class EditEventFormState extends State<EditEventForm> {
                   ),
                   validator: (val) =>
                       val.isEmpty ? "Camping name should not be empty" : null,
-                  //onSaved: (val) => _eventName = val,
                 ),
               ),
               new TextFormField(
@@ -209,7 +206,6 @@ class EditEventFormState extends State<EditEventForm> {
                     ? "Camping description should not be empty"
                     : null,
                 maxLines: 6,
-                //onSaved: (val) => _description = val,
               ),
               new CalendarPicker(_startTimeController),
               new CalendarPicker(_endTimeController),

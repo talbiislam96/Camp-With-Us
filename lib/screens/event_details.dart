@@ -6,6 +6,7 @@ import 'package:camp_with_us/screens/profile.dart';
 import 'package:camp_with_us/widgets/event_description.dart';
 import 'package:camp_with_us/widgets/event_detail_header.dart';
 import 'package:camp_with_us/widgets/participant_scroller.dart';
+import 'package:camp_with_us/widgets/rating_imformation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -32,6 +33,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
           children: [
             EventDetailHeader(),
             Storyline(),
+           // RatingInformation(),
             SizedBox(height: 20.0),
             ActorScroller(),
             SizedBox(height: 50.0),

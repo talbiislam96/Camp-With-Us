@@ -86,11 +86,11 @@ class _AboutState extends State<About> {
                       children: [
                         CircleAvatar(
                           backgroundImage:
-                              AssetImage("assets/user_profile.png"),
+                              AssetImage("assets/islam.png"),
                           radius: 50.0,
                         ),
                         Text(
-                          "yafet.shil@gmail.com",
+                          "islam.talbi96@gmail.com",
                           style: TextStyle(
                             fontSize: 14.0,
                             fontWeight: FontWeight.normal,

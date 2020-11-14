@@ -38,7 +38,7 @@ class _EventDetailHeaderState extends State<EventDetailHeader> {
     int eventId = preferences.getInt("idEvent");
   }
 
-  getEventInfo() async {
+  Future<void> getEventInfo() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     eventId = preferences.getInt("idEvent");
     final response =
@@ -53,7 +53,7 @@ class _EventDetailHeaderState extends State<EventDetailHeader> {
     });
   }
 
-  onButtonClick() async {
+  Future<void> onButtonClick() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     eventId = preferences.getInt("idEvent");
     idConnectedUser = preferences.getInt("id");
@@ -114,7 +114,7 @@ class _EventDetailHeaderState extends State<EventDetailHeader> {
     }
   }
 
-  verifyParticipation() async {
+  Future<void> verifyParticipation() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     idConnectedUser = preferences.getInt("id");
     eventId = preferences.getInt("idEvent");
@@ -136,7 +136,7 @@ class _EventDetailHeaderState extends State<EventDetailHeader> {
     }
   }
 
-  getEventUserCreator() async {
+  Future<void> getEventUserCreator() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     eventId = preferences.getInt("idEvent");
     final response =

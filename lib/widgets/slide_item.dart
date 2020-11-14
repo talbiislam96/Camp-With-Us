@@ -41,7 +41,7 @@ class SlideItem extends StatefulWidget {
 }
 
 class _SlideItemState extends State<SlideItem> {
-  savePref(int id) async {
+  Future<void> savePref(int id) async {
     print("event clicked");
     print(id);
     SharedPreferences preferences = await SharedPreferences.getInstance();

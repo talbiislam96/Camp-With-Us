@@ -6,27 +6,26 @@ import 'dart:convert';
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class Myevents extends StatefulWidget {
+class ProfilEvents extends StatefulWidget {
 
   @override
-  _MyeventsState createState() => _MyeventsState();
+  _ProfilEventsState createState() => _ProfilEventsState();
 }
 
-class _MyeventsState extends State<Myevents> {
+class _ProfilEventsState extends State<ProfilEvents> {
   List<Event> _events = List<Event>();
   final List<Event> events;
-  int idConnectedUser;
+  int idProfile;
 
-  _MyeventsState({Key key, @required this.events}) ;
+  _ProfilEventsState({Key key, @required this.events}) ;
 
   String imageEvent;
-  //final Event event = ModalRoute.of(context).settings.arguments;
 
   Future<List<Event>> fetchEvents() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    idConnectedUser = preferences.getInt("id");
+    idProfile = preferences.getInt("idProfile");
     var response = await http.get(
-        Uri.encodeFull("http://localhost:1337/myevents/$idConnectedUser"),
+        Uri.encodeFull("http://localhost:1337/myevents/$idProfile"),
         //Uri.encodeFull("http://10.0.2.2:1337/evenement/show"),
         headers: {"Accept": "application/json"});
     var events = List<Event>();
