@@ -15,6 +15,7 @@ import 'package:camp_with_us/widgets/search_card.dart';
 import 'package:camp_with_us/widgets/slide_item.dart';
 
 import '../Entity/event.dart';
+import 'event_creator_profile.dart';
 
 class Events extends StatefulWidget {
   @override
@@ -27,6 +28,7 @@ class _EventState extends State<Events> {
   int idConnectedUser;
   String imageEvent;
   String imageFollowing;
+  int _idProfile ;
 
   Future<List<Following>> fetchFollowings() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -221,7 +223,7 @@ buildEventsList(BuildContext context, List<Event> events) {
   );
 }
 
-buildFriendsList(BuildContext context, List<Following> followings) {
+buildFriendsList (BuildContext context, List<Following> followings)  {
   return Container(
     height: 50.0,
     child: ListView.builder(
@@ -232,6 +234,7 @@ buildFriendsList(BuildContext context, List<Following> followings) {
       itemBuilder: (BuildContext context, int index) {
         File img = File(
             'Users/macbookpro/Desktop/ProjetFlutter/API/${followings[index].image}');
+       // int idProfile = followings[index].id;
 
         return Padding(
           padding: const EdgeInsets.only(right: 8.0),
@@ -244,8 +247,14 @@ buildFriendsList(BuildContext context, List<Following> followings) {
                   ),
                   radius: 25.0,
                 ),
-                onTap: () {
+                onTap: () async {
+                  SharedPreferences preferences = await SharedPreferences.getInstance();
+                  preferences.setInt("idProfile", followings[index].id);
                   print("friend clicked");
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CreatorProfile()),
+                  );
                 },
               ),
             ],
