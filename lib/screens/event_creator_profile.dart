@@ -6,27 +6,37 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'dart:io';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class CreatorProfile extends StatefulWidget {
   _CreatorProfileState createState() => _CreatorProfileState();
 }
 
 class _CreatorProfileState extends State<CreatorProfile> {
-  String emailProfile, nameProfile, surnameProfile, mobileProfile, imageProfile, nbrFollowers;
+  String emailProfile,
+      nameProfile,
+      surnameProfile,
+      mobileProfile,
+      imageProfile,
+      nbrFollowers;
   int profileId;
   File _image;
+  int followerId;
+  int followingId;
   List<Event> _events = List<Event>();
   final List<Event> events;
-  _CreatorProfileState({Key key, @required this.events}) ;
+  _CreatorProfileState({Key key, @required this.events});
+  String buttonText = "Follow";
+  Icon buttonIcon;
 
   int idProfile;
   Future<List<Event>> fetchEvents() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     idProfile = preferences.getInt("idProfile");
-    var response = await http.get(
-        Uri.encodeFull("http://localhost:1337/myevents/$idProfile"),
-        //Uri.encodeFull("http://10.0.2.2:1337/evenement/show"),
-        headers: {"Accept": "application/json"});
+    var response = await http
+        .get(Uri.encodeFull("http://localhost:1337/myevents/$idProfile"),
+            //Uri.encodeFull("http://10.0.2.2:1337/evenement/show"),
+            headers: {"Accept": "application/json"});
     var events = List<Event>();
 
     if (response.statusCode == 200) {
@@ -38,14 +48,15 @@ class _CreatorProfileState extends State<CreatorProfile> {
     }
     return events;
   }
+
   Future<void> getNumberFollowers() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     profileId = preferences.getInt("idProfile");
     final response =
-    // await http.get("http://10.0.2.2:1337/user/show/$idConnectedUser");
-    await http.get("http://localhost:1337/follower/show/$profileId");
+        // await http.get("http://10.0.2.2:1337/user/show/$idConnectedUser");
+        await http.get("http://localhost:1337/follower/show/$profileId");
     final data = jsonDecode(response.body);
-     nbrFollowers = data['numberFollowers'].toString();
+    nbrFollowers = data['numberFollowers'].toString();
     print(data);
     print(nbrFollowers);
   }
@@ -55,8 +66,8 @@ class _CreatorProfileState extends State<CreatorProfile> {
     profileId = preferences.getInt("idProfile");
     print("profile id:" + profileId.toString());
     final response =
-    // await http.get("http://10.0.2.2:1337/user/show/$idConnectedUser");
-    await http.get("http://localhost:1337/user/show/$profileId");
+        // await http.get("http://10.0.2.2:1337/user/show/$idConnectedUser");
+        await http.get("http://localhost:1337/user/show/$profileId");
 
     final data = jsonDecode(response.body);
 
@@ -72,23 +83,121 @@ class _CreatorProfileState extends State<CreatorProfile> {
         _image = File(
             "Users/macbookpro/Desktop/ProjetFlutter/Camp-With-Us/assets/user_profile.png");
       } else {
-        _image = File("Users/macbookpro/Desktop/ProjetFlutter/API/$imageProfile");
+        _image =
+            File("Users/macbookpro/Desktop/ProjetFlutter/API/$imageProfile");
         //_image = File("C:/Users/islam/Desktop/camp_with_us/$imageProfile");
       }
     });
   }
+
+  Future<void> onButtonClick() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    followerId = preferences.getInt("id");
+    followingId = preferences.getInt("idProfile");
+    String urlFollow = "http://localhost:1337/follow/add";
+    String urlCancel = "http://localhost:1337/follow/delete";
+    String urlVerify = "http://localhost:1337/follow/verify";
+
+    if (buttonText == "Follow") {
+      final responseVerify = await http.post(urlVerify, body: {
+        "id_follower": followerId.toString(),
+        "id_following": followingId.toString(),
+      });
+
+      final responseFollow = await http.post(urlFollow, body: {
+        "id_follower": followerId.toString(),
+        "id_following": followingId.toString(),
+      });
+      setState(() {
+        buttonText = "Unfollow";
+        buttonIcon = Icon(
+          Icons.cancel,
+          color: Colors.white,
+        );
+      });
+    } else if (buttonText == "Unfollow") {
+      http.Request rq = http.Request('DELETE', Uri.parse(urlCancel));
+      rq.bodyFields = {
+        'id_follower': followerId.toString(),
+        'id_following': followingId.toString(),
+      };
+      await http.Client().send(rq).then((response) {
+        response.stream.bytesToString().then((value) {});
+      });
+      setState(() {
+        buttonIcon = Icon(
+          Icons.check_circle,
+          color: Colors.white,
+        );
+        buttonText = "Follow";
+      });
+
+    }
+  }
+
+  Future<void> verifyFollow() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    followerId = preferences.getInt("id");
+    followingId = preferences.getInt("idProfile");
+    final response =
+        await http.post("http://localhost:1337/follow/verify", body: {
+      "id_follower": followerId.toString(),
+      "id_following": followingId.toString(),
+    });
+
+    final data = jsonDecode(response.body);
+    if (data == 'abonne deja') {
+      buttonText = "Unfollow";
+      buttonIcon = Icon(
+        Icons.cancel,
+        color: Colors.white,
+      );
+    } else if (data == 'vous pouvez abonner') {
+      buttonIcon = Icon(
+        Icons.check_circle,
+        color: Colors.white,
+      );
+      buttonText = "Follow";
+    }
+  }
+
+  successToast(String toast) {
+    return Fluttertoast.showToast(
+        msg: toast,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIos: 1,
+        backgroundColor: Colors.green,
+        textColor: Colors.white);
+  }
+
+  failToast(String toast) {
+    return Fluttertoast.showToast(
+        msg: toast,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIos: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white);
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getProfileInfo();
-    getNumberFollowers();
-    fetchEvents().then((value){
+    setState(() {
+      getNumberFollowers();
+      verifyFollow();
+
+    });
+    fetchEvents().then((value) {
       setState(() {
         _events.addAll(value);
       });
     });
   }
+
   Widget build(BuildContext cx) {
     return new Scaffold(
       appBar: AppBar(
@@ -125,8 +234,9 @@ class _CreatorProfileState extends State<CreatorProfile> {
                             shape: BoxShape.circle,
                             image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: FileImage(_image ?? File(
-                                  "Users/macbookpro/Desktop/ProjetFlutter/Camp-With-Us/assets/user_profile.png") ) ,
+                              image: FileImage(_image ??
+                                  File(
+                                      "Users/macbookpro/Desktop/ProjetFlutter/Camp-With-Us/assets/user_profile.png")),
                             ),
                             border:
                                 Border.all(color: Colors.white, width: 6.0)),
@@ -165,8 +275,10 @@ class _CreatorProfileState extends State<CreatorProfile> {
                   children: <Widget>[
                     Row(
                       children: <Widget>[
-                        Icon(Icons.phone,
-                        color: Colors.green,),
+                        Icon(
+                          Icons.phone,
+                          color: Colors.green,
+                        ),
                         SizedBox(
                           width: 5.0,
                         ),
@@ -182,8 +294,10 @@ class _CreatorProfileState extends State<CreatorProfile> {
                     ),
                     Row(
                       children: <Widget>[
-                        Icon(Icons.mail,
-                        color: Colors.blue,),
+                        Icon(
+                          Icons.mail,
+                          color: Colors.blue,
+                        ),
                         SizedBox(
                           width: 5.0,
                         ),
@@ -223,10 +337,26 @@ class _CreatorProfileState extends State<CreatorProfile> {
                     Row(children: <Widget>[
                       Expanded(
                         child: RaisedButton(
-                          onPressed: () {},
-                          child:Text('Follow', style: TextStyle(fontSize: 20,color: Colors.white)),
+                          onPressed: () {
+                            setState(() {
+                              print('follow clicked');
+                              onButtonClick();
+                            });
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Text(buttonText,
+                                  style: TextStyle(
+                                      fontSize: 20, color: Colors.white)),
+                              buttonIcon ??
+                                  Icon(
+                                    Icons.check_circle,
+                                    color: Colors.white,
+                                  ),
+                            ],
+                          ),
                           color: Colors.blue,
-
                         ),
                       ),
                     ]),
