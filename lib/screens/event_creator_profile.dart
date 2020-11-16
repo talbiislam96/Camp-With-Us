@@ -391,7 +391,7 @@ class _CreatorProfileState extends State<CreatorProfile> {
                               img: _events[index].photo,
                               title: _events[index].name,
                               address: _events[index].place,
-                              //rating: events["rating"],
+                              rating: _events[index].rating,
                               date: _events[index].dStart,
                             ),
                           );
@@ -405,91 +405,6 @@ class _CreatorProfileState extends State<CreatorProfile> {
           )
         ],
       ),
-    );
-  }
-
-  _showMoreOption(cx) {
-    showModalBottomSheet(
-      context: cx,
-      builder: (BuildContext bcx) {
-        return new Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.all(10.0),
-              child: Row(
-                children: <Widget>[
-                  Icon(
-                    Icons.feedback,
-                    color: Colors.black,
-                  ),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  Text(
-                    'Give feedback or report this profile',
-                    style: TextStyle(fontSize: 18.0),
-                  )
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(10.0),
-              child: Row(
-                children: <Widget>[
-                  Icon(
-                    Icons.block,
-                    color: Colors.black,
-                  ),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  Text(
-                    'Block',
-                    style: TextStyle(fontSize: 18.0),
-                  )
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(10.0),
-              child: Row(
-                children: <Widget>[
-                  Icon(
-                    Icons.link,
-                    color: Colors.black,
-                  ),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  Text(
-                    'Copy link to profile',
-                    style: TextStyle(fontSize: 18.0),
-                  )
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(10.0),
-              child: Row(
-                children: <Widget>[
-                  Icon(
-                    Icons.search,
-                    color: Colors.black,
-                  ),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  Text(
-                    'Search Profile',
-                    style: TextStyle(fontSize: 18.0),
-                  )
-                ],
-              ),
-            )
-          ],
-        );
-      },
     );
   }
 }

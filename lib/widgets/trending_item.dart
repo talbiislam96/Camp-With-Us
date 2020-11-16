@@ -11,7 +11,7 @@ class TrendingItem extends StatefulWidget {
   final String img;
   final String title;
   final String address;
-  final String rating;
+  final double rating;
   final String date;
 
   TrendingItem({
@@ -95,31 +95,12 @@ class _TrendingItemState extends State<TrendingItem> {
                                 size: 10.0,
                               ),
                               Text(
-                                " ${widget.rating} ",
+                                " ${widget.rating}" ?? "NOT AVAILABLE" ,
                                 style: TextStyle(
                                   fontSize: 10.0,
                                 ),
                               ),
                             ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      top: 6.0,
-                      left: 6.0,
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(3.0)),
-                        child: Padding(
-                          padding: EdgeInsets.all(4.0),
-                          child: Text(
-                            " OPEN ",
-                            style: TextStyle(
-                              fontSize: 10.0,
-                              color: Colors.green,
-                              fontWeight: FontWeight.bold,
-                            ),
                           ),
                         ),
                       ),

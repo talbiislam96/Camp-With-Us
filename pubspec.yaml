@@ -47,6 +47,7 @@ dependencies:
   persistent_bottom_nav_bar: any
   local_auth: ^0.6.3+4
   google_fonts: any
+  flutter_rating_bar: any
 
 
 

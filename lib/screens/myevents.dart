@@ -80,7 +80,7 @@ class _MyeventsState extends State<Myevents> {
                   img: _events[index].photo,
                   title: _events[index].name,
                   address: _events[index].place,
-                  //rating: _events["rating"],
+                  rating: _events[index].rating.toDouble(),
                   date: _events[index].dStart,
                 );
 

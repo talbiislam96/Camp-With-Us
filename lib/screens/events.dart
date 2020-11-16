@@ -198,6 +198,8 @@ buildCategoryList(BuildContext context) {
 }
 
 buildEventsList(BuildContext context, List<Event> events) {
+  List<Event> _events = List<Event>();
+
   return Container(
     height: MediaQuery.of(context).size.height / 2.4,
     width: MediaQuery.of(context).size.width,
@@ -214,7 +216,7 @@ buildEventsList(BuildContext context, List<Event> events) {
             img: events[index].photo,
             title: events[index].name,
             address: events[index].place,
-            //rating: events["rating"],
+            rating: events[index].rating,
             date: events[index].dStart,
           ),
         );
