@@ -160,6 +160,9 @@ class MapScreenState extends State<ProfilePage>
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      appBar: AppBar(
+        title: Text('Profile'),
+      ),
         body: new Container(
 
       child: new ListView(

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:camp_with_us/Entity/event.dart';
 import 'package:camp_with_us/screens/event_creator_profile.dart';
+import 'package:camp_with_us/screens/profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -19,6 +20,8 @@ class EventDetailHeader extends StatefulWidget {
 class _EventDetailHeaderState extends State<EventDetailHeader> {
   int eventId;
   int idConnectedUser;
+  int idProfile;
+
   String nameEvent,
       categoryEvent,
       phoneEvent,
@@ -35,7 +38,12 @@ class _EventDetailHeaderState extends State<EventDetailHeader> {
 
   getPref() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    int eventId = preferences.getInt("idEvent");
+     idProfile = preferences.getInt("profileId2");
+    idConnectedUser = preferences.getInt("id");
+
+    print("id profile; $idProfile");
+    print("id connected user; $idConnectedUser");
+
   }
 
   Future<void> getEventInfo() async {
@@ -148,9 +156,12 @@ class _EventDetailHeaderState extends State<EventDetailHeader> {
       nomUser = data['name'];
       prenomUser = data['prenom'];
       imageUser = data['image_user'];
+      idProfile = data['id_user'];
+      preferences.setInt("profileId2", data['id_user']);
       _image = File("Users/macbookpro/Desktop/ProjetFlutter/API/$imageUser");
       //_image = File("C:/Users/islam/Desktop/camp_with_us/$imageProfile");
     });
+    getPref();
   }
 
   successToast(String toast) {
@@ -177,14 +188,14 @@ class _EventDetailHeaderState extends State<EventDetailHeader> {
   void initState() {
     super.initState();
     verifyParticipation();
-    getPref();
     getEventInfo();
     getEventUserCreator();
+   // getPref();
+
   }
 
   @override
   Widget build(BuildContext context) {
-    var textTheme = Theme.of(context).textTheme;
 
     return Stack(
       children: [
@@ -240,10 +251,19 @@ class _EventDetailHeaderState extends State<EventDetailHeader> {
                   ],
                 ),
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => CreatorProfile()),
-                  );
+                  if(idProfile == idConnectedUser){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ProfilePage()),
+                    );
+                  }
+                  else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => CreatorProfile()),
+                    );
+                  }
+
                 },
               ),
             ),
