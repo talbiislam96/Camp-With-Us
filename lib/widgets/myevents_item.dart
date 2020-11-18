@@ -10,7 +10,7 @@ import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-
+import 'package:printing/printing.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 const kTextStyle = pw.TextStyle(
@@ -127,6 +127,9 @@ class _MyeventsItemState extends State<MyeventsItem> {
     File file = File("$documentPath/$title.pdf");
 
     file.writeAsBytesSync(pdf.save());
+    await Printing.sharePdf(bytes: pdf.save(), filename: '$title.pdf');
+   // await Printing.layoutPdf(onLayout: (PdfPageFormat format) async => pdf.save());
+
   }
 
   Future<void> savePref(int id) async {
