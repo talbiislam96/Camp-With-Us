@@ -77,10 +77,11 @@ class _SlideItemState extends State<SlideItem> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
+
                 Stack(
                   children: <Widget>[
                     Container(
-                      height: MediaQuery.of(context).size.height / 3.7,
+                      //height: MediaQuery.of(context).size.height / 3.7,
                       width: MediaQuery.of(context).size.width,
                       child: ClipRRect(
                         borderRadius: BorderRadius.only(
@@ -94,8 +95,7 @@ class _SlideItemState extends State<SlideItem> {
                            'Users/macbookpro/Desktop/ProjetFlutter/API/${widget.img}' ?? 'Users/macbookpro/Desktop/Camp-With-Us/assets/logo.png'),
                          fit: BoxFit.fill,
                         ),
-                        //child: Image.asset('assets/backgroundProfile.jpg',
-                          //fit: BoxFit.cover,
+
 
 
                        // ),
@@ -174,7 +174,7 @@ class _SlideItemState extends State<SlideItem> {
                     ],
                   ),
                 ),
-                SizedBox(height: 7.0),
+                SizedBox(height: 10.0),
                 Padding(
                   padding: EdgeInsets.only(left: 15.0),
                   child: Row(
@@ -202,6 +202,8 @@ class _SlideItemState extends State<SlideItem> {
                   ),
                 ),
                 SizedBox(height: 10.0),
+                SizedBox(height: 7.0),
+
               ],
             ),
           ),

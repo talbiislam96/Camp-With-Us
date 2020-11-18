@@ -4,6 +4,7 @@ class Participant {
   int idEvent;
   String name;
   String surname;
+  String phone;
   String image;
 
   Participant(
@@ -12,6 +13,7 @@ class Participant {
     this.idEvent,
     this.name,
     this.surname,
+    this.phone,
     this.image,
   );
 
@@ -22,5 +24,7 @@ class Participant {
     name = json['name'];
     surname = json['prenom'];
     image = json['image_user'];
+    phone = json['tel_user'];
+
   }
 }
